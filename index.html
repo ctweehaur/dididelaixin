@@ -5,11 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>弟弟的来信</title>
     <link rel="stylesheet" href="style.css">
+    <!-- 加上 defer 确保 HTML 树完全解析完后再执行 JS，彻底防止找不到 ID 变空白的问题 -->
+    <script src="script.js" defer></script>
 </head>
 <body>
 
 <div class="control-panel">
-    <button id="pyToggle" class="active" onclick="togglePinyin()">拼音 开</button>
+    <!-- 移除初始的 active，交由 JS 统一动态控制 -->
+    <button id="pyToggle" onclick="togglePinyin()">拼音 开</button>
     <button id="gameToggleBtn" onclick="toggleGameMode()" style="background: #8e44ad; color: white; border:none;">🎯 生词测试</button>
     <button onclick="toggleTheme()">🌙 模式</button>
 </div>
@@ -22,7 +25,8 @@
     <div id="notebookList" class="notebook-list"><span style="color:#999; font-size:13px;">点击词语 Copy 记录生词</span></div>
 </div>
 
-<div class="game-container" id="gameContainer">
+<!-- 显式加上 display: none; 配合 JS 的 toggleGameMode 逻辑 -->
+<div class="game-container" id="gameContainer" style="display: none;">
     <div class="notebook-title">
         <span>🧩 生词测试题</span>
         <button onclick="startQuizGame()" style="cursor:pointer; background:#34495e; color:white; border:none; padding:4px 10px; border-radius:10px;">🔄 重测</button>
@@ -48,6 +52,5 @@
     <div class="pop-arrow" id="popArrow"></div>
 </div>
 
-<script src="script.js"></script>
 </body>
 </html>
