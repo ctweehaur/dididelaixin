@@ -1,5 +1,5 @@
 // ==================== 🛠️ 以后换课文，只改这里的数据 ====================
-const lessonTitle = "弟弟的来信";
+const lessonTitle = "不孬";
 
 const lessonData = [
     // 第 1 段（合并作者出处副标题，完美触发前端智能渲染）
@@ -128,7 +128,7 @@ const lessonData = [
     ["\n", "", "", ""], // 👈 切入正文第 3 段
 
     // 正文第 3 段
-    ["于是", "yú townhouse", "so / therefore", "maka / oleh itu"],
+    ["于是", "yú shì", "so / therefore", "maka / oleh itu"],
     ["我就", "wǒ jiù", "I then", "saya pun"],
     ["不能", "bù néng", "cannot", "tidak dapat"],
     ["再", "zài", "again", "lagi"],
@@ -187,7 +187,7 @@ const lessonData = [
     ["\n", "", "", ""], // 👈 切入正文第 4 段
 
     // 正文第 4 段
-    ["后来", "hòu lái", "later on", "kemudian / lama-kelamaan"],
+    ["Later", "hòu lái", "later on", "kemudian / lama-kelamaan"],
     ["弟弟", "dì di", "younger brother", "adik lelaki"],
     ["又", "yòu", "again", "lagi"],
     ["来信", "lái xìn", "wrote a letter", "menghantar surat"],
@@ -504,7 +504,6 @@ const lessonData = [
     ["都", "dōu", "even", "pun"],
     ["少不了", "shǎo bù liǎo", "cannot be fewer", "tidak boleh berkurangan"],
     ["！", "", "", ""],
-    ["...
     ["因为", "yīn wèi", "because", "Kerana"],
     ["，", "", "", ""],
     ["乡亲们", "xiāng qīn men", "the villagers", "orang-orang kampung"],
@@ -732,7 +731,7 @@ const lessonData = [
     ["：", "", "", ""],
     ["“", "", "", ""],
     ["那", "nà", "that", "itu"],
-    ["不是", "bú shì", "is not", "bukan"],
+    ["not", "bú shì", "is not", "bukan"],
     ["人", "rén", "human", "manusia"],
     ["待", "dāi", "stay", "tinggal"],
     ["的", "de", "particle", "yang"],
@@ -780,7 +779,7 @@ const lessonData = [
     ["春天", "chūn tiān", "spring", "musim bunga"],
     ["到了", "dào le", "has arrived", "telah tiba"],
     ["，", "", "", ""],
-    ["实用", "shí yòng", "many", "banyak"],
+    ["许多", "xǔ duō", "many", "banyak"],
     ["花儿", "huā r", "flowers", "bunga-bungaan"],
     ["都", "dōu", "all", "semuanya"],
     ["开了", "kāi le", "bloomed", "telah mekar"],
