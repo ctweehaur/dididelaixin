@@ -1,4 +1,7 @@
-// ==================== ⚙️ 这里是运行逻辑大脑（含真正 AI 批改） ============================
+// ==========================================================================
+// ⚙️ 全互动式华文教学系统阅读器大脑 - script.js (2026 完美终极版)
+// ==========================================================================
+
 let currentIdx = -1; 
 let saved = JSON.parse(localStorage.getItem('saved_104')) || [];
 let quizData = [];
@@ -6,13 +9,14 @@ let currentQuizIdx = 0;
 let isLocked = false;
 
 window.onload = function() {
+    // 动态渲染页面大标题与网页标签标题
     document.getElementById('articleTitle').innerText = lessonTitle;
     document.title = lessonTitle;
 
     if (typeof lessonData !== 'undefined') { 
         render(); 
         renderNB(); 
-        renderQuestions(); 
+        renderQuestions(); // 启动全新升级的智能全互动习题区
     }
     document.body.appendChild(document.getElementById('buddyPopover'));
     document.addEventListener('click', () => { 
@@ -21,24 +25,27 @@ window.onload = function() {
     });
 };
 
+// 📖 核心：正文渲染器（含拼音、中英文、标点符号融合与末段出处识别）
 function render() {
     const cnt = document.getElementById('content'); 
     cnt.innerHTML = "";
     let pNum = 1; 
     let p = document.createElement("p"); 
     
+    // 智能段落终结器
     function finalizeParagraph(paragraphElement) {
         if (paragraphElement.childNodes.length === 0) return;
         
         const textContent = paragraphElement.innerText.trim();
+        // 🎯 核心判断：如果最后一段是以括号开头且包含书名号，判定为文末出处行
         const isAuthorLineAtEnd = (textContent.startsWith("（") && textContent.includes("《"));
         
         if (isAuthorLineAtEnd) {
             paragraphElement.style.textIndent = "0";
-            paragraphElement.style.textAlign = "right";  
-            paragraphElement.style.color = "#7f8c8d";    
-            paragraphElement.style.fontSize = "15px";     
-            paragraphElement.style.marginTop = "30px";    
+            paragraphElement.style.textAlign = "right";  // 强制优雅右对齐
+            paragraphElement.style.color = "#7f8c8d";    // 舒适灰色
+            paragraphElement.style.fontSize = "15px";     // 字体微调
+            paragraphElement.style.marginTop = "30px";    // 拉开正文间距
         } else {
             let s = document.createElement("span");
             s.className = "p-index";
@@ -75,7 +82,7 @@ function render() {
     finalizeParagraph(p);
 }
 
-// 🚀 核心升级：全互动式思考题 + 真正的 AI 批改引擎
+// 🧠 核心：全互动式思考题 + 真正的 AI 智能批改引擎
 function renderQuestions() {
     if (typeof lessonQuestions === 'undefined' || lessonQuestions.length === 0) return;
 
@@ -101,12 +108,13 @@ function renderQuestions() {
         qBox.style.paddingBottom = "20px";
         qBox.style.borderBottom = "1px dashed #eee";
 
-        // 题干
+        // 渲染题干与分值
         const qText = document.createElement("div");
         qText.innerHTML = `<strong>${q.number}</strong> ${q.question} <span style="color:#e74c3c; font-weight:bold;">[${q.score}分]</span>`;
         qText.style.fontSize = "16px";
         qBox.appendChild(qText);
 
+        // 如果是概述题，加上背景文章引用卡片
         if (q.type === "summary") {
             const block = document.createElement("blockquote");
             block.innerText = q.context;
@@ -120,6 +128,7 @@ function renderQuestions() {
             qBox.appendChild(block);
         }
 
+        // 学生输入文本框
         const textarea = document.createElement("textarea");
         textarea.placeholder = q.type === "summary" ? "请在此处输入您的概述答案（注意不超过60字）..." : "请在此处输入您的答案...";
         textarea.style.width = "100%";
@@ -130,10 +139,13 @@ function renderQuestions() {
         textarea.style.borderRadius = "6px";
         textarea.style.border = "1px solid #ccc";
         textarea.style.fontSize = "15px";
+        textarea.style.fontFamily = "inherit";
 
+        // 【方案B核心】：从浏览器本地环境读取该题的历史答案
         textarea.value = localStorage.getItem(`ans_${q.id}`) || "";
         qBox.appendChild(textarea);
 
+        // 控制面板区（计字与双按钮）
         const controlRow = document.createElement("div");
         controlRow.style.display = "flex";
         controlRow.style.justify = "space-between";
@@ -150,7 +162,7 @@ function renderQuestions() {
 
         const btnGroup = document.createElement("div");
 
-        // AI 批改按钮
+        // 🤖 AI 智能批改按钮
         const aiBtn = document.createElement("button");
         aiBtn.innerText = "🤖 AI 批改结果";
         aiBtn.style.padding = "6px 12px";
@@ -163,7 +175,7 @@ function renderQuestions() {
         aiBtn.style.marginRight = "8px";
         btnGroup.appendChild(aiBtn);
 
-        // 传统标准答案核对按钮
+        // 📋 传统标准答案查验按钮
         const submitBtn = document.createElement("button");
         submitBtn.innerText = "查看标准答案 📋";
         submitBtn.style.padding = "6px 12px";
@@ -178,7 +190,7 @@ function renderQuestions() {
         controlRow.appendChild(btnGroup);
         qBox.appendChild(controlRow);
 
-        // 标准答案盒
+        // 标准参考答案盒子（初始隐藏）
         const ansBox = document.createElement("div");
         ansBox.style.display = "none";
         ansBox.style.marginTop = "15px";
@@ -190,7 +202,7 @@ function renderQuestions() {
         ansBox.innerHTML = `<strong>💡 评分标准与参考答案：</strong><br><div style="margin-top:6px;">${q.modelAnswer}</div>`;
         qBox.appendChild(ansBox);
 
-        // AI 批改意见盒
+        // AI 在线批改结果展示盒（初始隐藏）
         const aiBox = document.createElement("div");
         aiBox.style.display = "none";
         aiBox.style.marginTop = "15px";
@@ -201,13 +213,13 @@ function renderQuestions() {
         aiBox.style.fontSize = "14px";
         qBox.appendChild(aiBox);
 
-        // 传统核对按钮逻辑
+        // 标准参考答案互锁切换逻辑
         submitBtn.onclick = function() {
             ansBox.style.display = ansBox.style.display === "none" ? "block" : "none";
             submitBtn.innerText = ansBox.style.display === "block" ? "收起标准答案 ❌" : "查看标准答案 📋";
         };
 
-        // 🧠 核心：直连云端 Gemini 的 AI 批改在线逻辑
+        // 【方案B精髓】：直连云端 Gemini 的 AI 批改在线逻辑（彻底解决了 reading '0' 报错）
         aiBtn.onclick = async function() {
             const studentAns = textarea.value.trim();
             if (!studentAns) {
@@ -215,19 +227,18 @@ function renderQuestions() {
                 return;
             }
 
-            // 安全获取或要求输入用户的 Gemini API 密钥
+            // 【安全逻辑】：首次使用进行弹窗要求绑定 API Key，随后永久存入抽屉记忆
             let apiKey = localStorage.getItem("gemini_api_key");
             if (!apiKey) {
-                apiKey = prompt("🤖 首次使用请输入您的 Gemini API Key (可到谷歌免费申请):\n（密钥将安全保存在您的本地浏览器中）");
+                apiKey = prompt("🤖 首次使用请输入您的 Gemini API Key (可到班级群/谷歌免费申请):\n（密钥将安全保存在您的本地浏览器中）");
                 if (!apiKey) return;
-                localStorage.setItem("gemini_api_key", apiKey);
+                localStorage.setItem("gemini_api_key", apiKey.trim());
             }
 
             aiBox.style.display = "block";
-            aiBox.innerHTML = "<span style='color:#34495e;'>⏳ AI 老师正在仔细审阅您的作答，请稍候...</span>";
+            aiBox.innerHTML = "<span style='color:#34495e;'>⏳ AI 老师正在仔细审阅您的作答并核对采分点，请稍候...</span>";
             aiBtn.disabled = true;
 
-            // 完美的批改提示词策略（SPM / 统考阅卷官风格）
             const promptText = `你是一位严谨的华文老师。请阅读以下题目、评分标准以及学生的作答，做出极其专业的批改。
 题目：${q.question} [满分 ${q.score} 分]
 ${q.type === 'summary' ? `背景短文：${q.context}` : ''}
@@ -241,7 +252,6 @@ ${q.type === 'summary' ? `背景短文：${q.context}` : ''}
 <strong>【给同学的改进建议】</strong>：(一两句精炼的评语)`;
 
             try {
-                // 直接使用 Fetch API 发送云端请求给 Gemini 1.5 Flash 引擎
                 const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
@@ -249,22 +259,34 @@ ${q.type === 'summary' ? `背景短文：${q.context}` : ''}
                 });
 
                 const data = await response.json();
-                const aiReply = data.candidates[0].content.parts[0].text;
                 
-                // 将 Markdown 格式优雅地转换为网页换行
-                aiBox.innerHTML = `<strong>🤖 AI 老师线上批改报告：</strong><br><div style="margin-top:8px; white-space: pre-line; line-height:1.6;">${aiReply}</div>`;
+                // 🚀 智能数据安全解包器：多层防闪退安全检测机制
+                let aiReply = "";
+                if (data && data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts && data.candidates[0].content.parts[0]) {
+                    aiReply = data.candidates[0].content.parts[0].text;
+                } else if (data && data.error) {
+                    throw new Error(data.error.message || "API 内部错误");
+                } else {
+                    throw new Error("返回的数据结构异常，请重新绑定有效的 API Key。");
+                }
+                
+                // 动态清洗过滤 Markdown 语法的星号并转化为 HTML 纯加粗格式
+                let formattedReply = aiReply
+                    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                    .replace(/\*(.*?)\*/g, '<em>$1</em>');
+
+                aiBox.innerHTML = `<strong>🤖 AI 老师线上批改报告：</strong><br><div style="margin-top:8px; white-space: pre-line; line-height:1.6; color:#2c3e50;">${formattedReply}</div>`;
             } catch (err) {
-                // 🚀 升级版听诊器：把具体的错误原因打印在网页上，方便我们排查
                 aiBox.innerHTML = `<span style='color:#e74c3c;'>❌ 批改失败！<br>
-                <strong>可能原因：</strong>网络被学校/公司网络阻挡，或密钥复制时带了空格。<br>
-                <strong>技术报错信息：</strong>${err.message || err}</span>`;
+                <strong>可能原因：</strong>密钥失效或复制时有空格，若要重绑请看下面代码注释。<br>
+                <strong>技术报错原因：</strong>${err.message || err}</span>`;
                 console.error(err);
             } finally {
                 aiBtn.disabled = false;
             }
         };
 
-        // 动态计字
+        // 动态高精度华文计字函数（过滤空格与回车）
         function updateCharCount() {
             if (q.type === "summary") {
                 const text = textarea.value;
@@ -277,8 +299,9 @@ ${q.type === 'summary' ? `背景短文：${q.context}` : ''}
                 }
             }
         }
+        
         textarea.oninput = function() {
-            localStorage.setItem(`ans_${q.id}`, textarea.value);
+            localStorage.setItem(`ans_${q.id}`, textarea.value); // 自动保存当前题目所写答案
             updateCharCount();
         };
         setTimeout(updateCharCount, 100);
@@ -289,7 +312,7 @@ ${q.type === 'summary' ? `背景短文：${q.context}` : ''}
     cnt.appendChild(qCard);
 }
 
-// ==================== 🛠️ 以下维持原有的字典与生词本逻辑 ============================
+// ==================== 🛠️ 以下维持原有的字典与生词本/小游戏测试逻辑 ============================
 function openPop(el, i) {
     currentIdx = i; 
     const d = lessonData[i];
