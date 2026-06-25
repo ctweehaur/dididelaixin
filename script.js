@@ -1,5 +1,5 @@
 // ==========================================================================
-// ⚙️ 全互动式华文教学系统阅读器大脑 - script.js (2026 最终GitHub生产环境版)
+// ⚙️ 全互动式华文教学系统阅读器大脑 - script.js (2026 v1正式稳定版)
 // ==========================================================================
 
 let currentIdx = -1; 
@@ -80,7 +80,7 @@ function render() {
     finalizeParagraph(p);
 }
 
-// 🧠 核心习题区：支持字数实时统计、本地保存、与高精度原子级修复版 Gemini API 批改
+// 🧠 核心习题区：支持字数实时统计、本地保存、与官方 v1 正式版 Gemini API 批改
 function renderQuestions() {
     if (typeof lessonQuestions === 'undefined' || lessonQuestions.length === 0) return;
 
@@ -207,7 +207,7 @@ function renderQuestions() {
             submitBtn.innerText = ansBox.style.display === "block" ? "收起标准答案 ❌" : "查看标准答案 📋";
         };
 
-        // 🚀 核心修复：纯变量拼接字符串，杜绝 404 网址路径跑偏 Bug
+        // 🚀 核心更新：使用 v1 正式版稳定端点进行 fetch
         aiBtn.onclick = async function() {
             const studentAns = textarea.value.trim();
             if (!studentAns) {
@@ -239,8 +239,8 @@ ${q.type === 'summary' ? `背景短文：${q.context}` : ''}
 <strong>【给同学的改进建议】</strong>：(一两句精炼的评语)`;
 
             try {
-                // 🎯 采用安全的“+”拼接，防止因反引号模板引发任何隐式路径错位
-                const targetUrl = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=" + apiKey;
+                // 🎯 精准切换为 v1 通道
+                const targetUrl = "https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=" + apiKey;
 
                 const response = await fetch(targetUrl, {
                     method: "POST",
@@ -268,7 +268,6 @@ ${q.type === 'summary' ? `背景短文：${q.context}` : ''}
                 aiBox.innerHTML = `<strong>🤖 AI 老师线上批改报告：</strong><br><div style="margin-top:8px; white-space: pre-line; line-height:1.6; color:#2c3e50;">${formattedReply}</div>`;
             } catch (err) {
                 aiBox.innerHTML = `<span style='color:#e74c3c;'>❌ 批改失败！<br>
-                <strong>可能原因：</strong>密钥复制不全、带了隐形字符或已失效。<br>
                 <strong>技术报错原因：</strong>${err.message || err}</span>`;
                 console.error(err);
             } finally {
