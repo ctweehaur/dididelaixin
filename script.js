@@ -2,7 +2,7 @@ const lessonTitle = "弟弟的来信";
 
 const lessonData = [
     // 正文第 1 段
-    ["师范", "shī fàn", "teacher's college", "maktab perguruan"],
+    ["师范", "shī fàn", "normal school / teacher's college", "maktab perguruan"],
     ["毕业", "bì yè", "graduate", "graduat"],
     ["的", "de", "particle", "yang"],
     ["弟弟", "dì di", "younger brother", "adik lelaki"],
@@ -48,7 +48,7 @@ const lessonData = [
     ["待", "dāi", "stay / live", "tinggal / duduk"],
     ["的", "de", "particle", "yang"],
     ["地方", "dì fang", "place", "tempat"],
-    ["。", "”", "", ""],
+    ["。”", "", "", ""], // 🎯 已完全修复合并
 
     ["\n", "", "", ""], // 👈 第 2 段
 
@@ -77,7 +77,7 @@ const lessonData = [
     ["“", "", "", ""],
     ["咋", "zǎ", "how / what", "kenapa / mengapa"],
     ["？", "", "", ""],
-    ["not", "bú shì", "not", "bukan"],
+    ["不是", "bú shì", "not", "bukan"],
     ["人", "rén", "human", "manusia"],
     ["待", "dāi", "stay", "tinggal"],
     ["的", "de", "particle", "yang"],
@@ -108,7 +108,7 @@ const lessonData = [
     ["打断", "dǎ duàn", "break", "patahkan"],
     ["你的", "nǐ de", "your", "kamu punya"],
     ["腿", "tuǐ", "leg", "kaki"],
-    ["！", "”", "", ""],
+    ["！”", "", "", ""], // 🎯 已完全修复合并
 
     ["\n", "", "", ""], // 👈 第 3 段
 
@@ -141,9 +141,11 @@ const lessonData = [
     ["的", "de", "particle", "yang"],
     ["地方", "dì fang", "place", "tempat"],
     ["，", "", "", ""],
-    ["停电", "tíng diàn", "no electricity", "tiada bekalan elektrik"],
+    ["没有", "méi yǒu", "no / without", "tiada"],
+    ["电", "diàn", "electricity", "bekalan elektrik"],
     ["，", "", "", ""],
-    ["停水", "tíng shuǐ", "no water", "tiada bekalan air"],
+    ["没有", "méi yǒu", "no / without", "tiada"],
+    ["水", "shuǐ", "water", "bekalan air"],
     ["，", "", "", ""],
     ["如果", "rú guǒ", "if", "jika / sekiranya"],
     ["拍", "pāi", "film / shoot", "merakam / membuat penggambaran"],
@@ -154,7 +156,7 @@ const lessonData = [
     ["这里", "zhè lǐ", "here", "sini / di sini"],
     ["最", "zuì", "most", "paling"],
     ["合适", "hé shì", "suitable", "sesuai / sepadan"],
-    ["。", "”", "", ""],
+    ["。”", "", "", ""], // 🎯 已完全修复合并
     ["爹", "diē", "dad", "ayah"],
     ["听完", "tīng wán", "after hearing", "setelah mendengar"],
     ["哼", "hēng", "snorted", "mendengus"],
@@ -164,7 +166,7 @@ const lessonData = [
     ["：", "", "", ""],
     ["“", "", "", ""],
     ["放狗屁", "fàng gǒu pì", "nonsense / bullshit (lit. farting like a dog)", "cakap merapu / karut / omong kosong"],
-    ["！", "”", "", ""],
+    ["！”", "", "", ""], // 🎯 已完全修复合并
 
     ["\n", "", "", ""], // 👈 第 4 段
 
@@ -185,7 +187,7 @@ const lessonData = [
     ["的", "de", "particle", "yang"],
     ["肉块", "ròu kuài", "meat chunks", "ketulan daging"],
     ["，", "", "", ""],
-    ["因为", "yīn wèi", "because", "kerana"],
+    ["because", "yīn wèi", "because", "kerana"],
     ["他们的", "tā men de", "their", "mereka punya"],
     ["孩子", "hái zi", "children", "anak-anak"],
     ["认字", "rèn zì", "learn to read / recognize characters", "mengenal huruf / celik huruf"],
@@ -214,7 +216,7 @@ const lessonData = [
     ["全部", "quán bù", "all / completely", "semua sekali"],
     ["呕", "ǒu", "vomited", "muntahkan"],
     ["了", "le", "particle", ""],
-    ["。", "”", "", ""],
+    ["。”", "", "", ""], // 🎯 已完全修复合并
     ["我", "wǒ", "I", "saya"],
     ["笑着", "xiào zhe", "smilingly", "sambil tersenyum"],
     ["读完", "dú wán", "finished reading", "habis membaca"],
@@ -233,7 +235,7 @@ const lessonData = [
     ["，", "", "", ""],
     ["味道", "wèi dào", "taste / flavor", "rasa"],
     ["很好", "hěn hǎo", "very good", "sangat sedap / baik"],
-    ["。", "”", "", ""],
+    ["。”", "", "", ""], // 🎯 已完全修复合并
     ["我", "wǒ", "I", "saya"],
     ["问", "wèn", "asked", "bertanya"],
     ["哪一年", "nǎ yì nián", "which year", "tahun mana / bila"],
@@ -273,7 +275,7 @@ const lessonData = [
     ["，", "", "", ""],
     ["真", "zhēn", "really", "sungguh"],
     ["不容易", "bù róng yì", "not easy (precious)", "bukan mudah / amat berharga"],
-    ["。", "”", "", ""],
+    ["。”", "", "", ""], // 🎯 已完全修复合并
     ["弟弟", "dì di", "younger brother", "adik lelaki"],
     ["附信", "fù xìn", "attached a note", "melampirkan surat"],
     ["送来", "sòng lái", "sent over", "menyampaikan"],
@@ -292,7 +294,7 @@ const lessonData = [
     ["送给", "sòng gěi", "give to", "hadiahkan kepada"],
     ["爹", "diē", "dad", "ayah"],
     ["吧", "ba", "particle", ""],
-    ["！", "”", "", ""],
+    ["！”", "", "", ""], // 🎯 已完全修复合并
 
     ["\n", "", "", ""], // 👈 第 6 段
 
@@ -305,7 +307,7 @@ const lessonData = [
     ["：", "", "", ""],
     ["“", "", "", ""],
     ["寄回去", "jì huí qù", "mail it back", "hantar pos balik"],
-    ["。", "”", "", ""],
+    ["。”", "", "", ""], // 🎯 已完全修复合并
     ["我", "wǒ", "I", "Saya"],
     ["取出了", "qǔ chū le", "took out", "mengeluarkan"],
     ["纸笔", "zhǐ bǐ", "paper and pen", "kertas dan pen"],
@@ -317,7 +319,7 @@ const lessonData = [
     ["封", "fēng", "measure word", "sepucuk"],
     ["信", "xìn", "letter", "surat"],
     ["吧", "ba", "particle", "kah"],
-    ["？", "”", "", ""],
+    ["？”", "", "", ""], // 🎯 已完全修复合并
     ["爹", "diē", "dad", "Ayah"],
     ["蹲在", "dūn zài", "squatting at", "mencangkung di"],
     ["大门口", "dà mén kǒu", "main gate", "pintu besar / pintu depan"],
@@ -339,7 +341,7 @@ const lessonData = [
     ["“", "", "", ""],
     ["勿", "wù", "do not", "jangan"],
     ["牵挂", "qiān guà", "worry / be anxious about", "bimbang / risau / ingat-ingatan"],
-    ["。", "”", "", ""],
+    ["。”", "", "", ""], // 🎯 已完全修复合并
 
     ["\n", "", "", ""], // 👈 第 7 段
 
@@ -397,7 +399,7 @@ const lessonData = [
     ["，", "", "", ""],
     ["夺了", "duó le", "won / took", "merangkul / memenangi"],
     ["头名", "tóu míng", "first place", "tempat pertama / juara"],
-    ["！", "”", "", ""],
+    ["！”", "", "", ""], // 🎯 已完全修复合并
     ["弟弟", "dì di", "younger brother", "Adik lelaki"],
     ["寄回", "jì huí", "sent back", "menghantar balik"],
     ["一张", "yì zhāng", "a (measure word for paper)", "sekeping"],
@@ -415,7 +417,7 @@ const lessonData = [
     ["显眼", "xiǎn yǎn", "conspicuous / eye-catching", "menonjol / ketara / senang dilihat"],
     ["贴", "tiē", "paste", "tampal"],
     ["哪儿", "nǎ r", "there", "di situ"],
-    ["！", "”", "", ""],
+    ["！”", "", "", ""], // 🎯 已完全修复合并
 
     ["\n", "", "", ""], // 👈 第 8 段
 
@@ -480,7 +482,7 @@ const lessonData = [
     ["他", "tā", "they", "mereka"],
     ["都", "dōu", "even", "pun"],
     ["少不了", "shǎo bù liǎo", "cannot be fewer", "tidak boleh berkurangan"],
-    ["！", "", "", ""],
+    ["！”", "", "", ""], // 🎯 已完全修复合并
     ["因为", "yīn wèi", "because", "Kerana"],
     ["，", "", "", ""],
     ["乡亲们", "xiāng qīn men", "the villagers", "orang-orang kampung"],
@@ -492,7 +494,7 @@ const lessonData = [
     ["让", "ràng", "let / allow", "membiarkan"],
     ["儿女", "ér nǚ", "children", "anak-anak"],
     ["休学", "xiū xué", "drop out of school / suspend schooling", "berhenti sekolah / menangguhkan sekolah"],
-    ["！", "”", "", ""],
+    ["！”", "", "", ""], // 🎯 已完全修复合并
 
     ["\n", "", "", ""], // 👈 第 9 段
 
@@ -567,21 +569,7 @@ const lessonData = [
     ["儿子", "ér zi", "son", "anak lelaki"],
     ["，", "", "", ""],
     ["不孬", "bù nāo", "not bad / great", "hebat / bagus"],
-    ["……", "”", "", ""],
-    ["我", "wǒ", "I", "Saya"],
-    ["把", "bǎ", "structural particle", ""],
-    ["爹的", "diē de", "dad's", "ayah punya"],
-    ["夸奖", "kuā jiǎng", "praise", "pujian"],
-    ["给", "gěi", "to", "kepada"],
-    ["弟弟", "dì di", "younger brother", "adik lelaki"],
-    ["寄了去", "jì le qù", "mailed it over", "poskan ke sana"],
-    ["。", "", "", ""],
-    ["弟弟", "dì di", "younger brother", "Adik lelaki"],
-    ["来信", "lái xìn", "wrote back", "menghantar surat balas"],
-    ["说", "shuō", "said", "berkata"],
-    ["他", "tā", "he", "dia"],
-    ["哭了", "kū le", "cried", "menangis"],
-    ["。", "", "", ""],
+    ["……”", "", "", ""], // 🎯 已完全修复合并
 
     ["\n", "", "", ""], // 👈 第 10 段
 
@@ -654,11 +642,12 @@ const lessonData = [
     ["那", "nà", "that", "itu"],
     ["几十块钱", "jǐ shí kuài qián", "dozens of yuan", "beberapa puluh ringgit / yuan"],
     ["车票", "chē piào", "bus or train ticket", "tiket bas / kereta api"],
+    ["意识", "yì shí", "consciousness", "kesedaran"],
     ["。", "", "", ""],
     ["你", "nǐ", "you", "Kamu"],
     ["知道", "zhī dào", "know", "tahu"],
     ["吗", "ma", "particle", "kah"],
-    ["？", "”", "", ""],
+    ["？”", "", "", ""], // 🎯 已完全修复合并
     ["爹", "diē", "dad", "Ayah"],
     ["说", "shuō", "said", "berkata"],
     ["他", "tā", "he", "dia"],
@@ -680,7 +669,7 @@ const lessonData = [
     ["兄弟", "xiōng di", "brother / mister", "saudara / encik"],
     ["，", "", "", ""],
     ["问个路", "wèn gè lù", "ask for directions", "tumpang tanya jalan"],
-    ["。", "”", "", ""],
+    ["。”", "", "", ""], // 🎯 已完全修复合并
     ["那人", "nà rén", "that person", "orang itu"],
     ["一回头", "yì huí tóu", "turned around", "sebaik memalingkan muka"],
     ["：", "", "", ""],
@@ -710,7 +699,7 @@ const lessonData = [
     ["待", "dāi", "stay", "tinggal"],
     ["的", "de", "particle", "yang"],
     ["地方", "dì fang", "place", "tempat"],
-    ["！", "”", "", ""],
+    ["！”", "", "", ""], // 🎯 已完全修复合并
     ["爹", "diē", "dad", "Ayah"],
     ["让我", "ràng wǒ", "asked me to", "menyuruh saya"],
     ["写信", "xiě xìn", "write a letter", "menulis surat"],
@@ -732,7 +721,7 @@ const lessonData = [
     ["反季节菜", "fǎn jì jié cài", "off-season vegetables", "sayur-sayuran luar musim"],
     ["，", "", "", ""],
     ["挣钱", "zhèng qián", "earn money", "cari duit"],
-    ["！", "”", "", ""],
+    ["！”", "", "", ""], // 🎯 已完全修复合并
     ["弟弟", "dì di", "younger brother", "Adik lelaki"],
     ["很快", "hěn kuài", "very quickly", "dengan sangat cepat"],
     ["就", "jiù", "then", "pun"],
@@ -745,7 +734,7 @@ const lessonData = [
     ["决定了", "jué dìng le", "decided", "sudah buat keputusan"],
     ["，", "", "", ""],
     ["不回去", "bù huí qù", "not going back", "tidak akan balik"],
-    ["！", "”", "", ""],
+    ["！”", "", "", ""], // 🎯 已完全修复合并
     ["弟弟", "dì di", "younger brother", "Adik lelaki"],
     ["还在", "hái zài", "also in", "juga dalam"],
     ["信中", "xìn zhōng", "in the letter", "surat itu"],
@@ -781,11 +770,11 @@ const lessonData = [
     ["，", "", "", ""],
     ["很", "hěn", "very", "sangat"],
     ["美丽", "měi lì", "beautiful", "indah / cantik"],
-    ["……", "”", "", ""],
+    ["……”", "", "", ""], // 🎯 已完全修复合并
 
     ["\n", "", "", ""], // 👈 分段标记，切入文末作者出处
 
-    // 🎯 独立出来的文末作者出处（等下我们在 JS 里让它靠右对齐）
+    // 🎯 独立出来的文末作者出处
     ["（", "", "", ""],
     ["于心亮", "yú xīn liàng", "Yu Xinliang (Author)", "Yu Xinliang (Penulis)"],
     ["《", "", "", ""],
