@@ -1,5 +1,5 @@
 // ==========================================================================
-// ⚙️ 全互动式华文教学系统阅读器大脑 - script.js (2026 智能 Gemini 3.5 版)
+// ⚙️ 全互动式华文教学系统阅读器大脑 - script.js (2026 DeepSeek 极速无缝批改版)
 // ==========================================================================
 
 let currentIdx = -1; 
@@ -40,8 +40,8 @@ function render() {
         
         if (isAuthorLineAtEnd) {
             paragraphElement.style.textIndent = "0";
-            paragraphElement.style.textAlign = "right";  // 强制右对齐
-            paragraphElement.style.color = "#7f8c8d";    // 出处灰色
+            paragraphElement.style.textAlign = "right";  
+            paragraphElement.style.color = "#7f8c8d";    
             paragraphElement.style.fontSize = "15px";     
             paragraphElement.style.marginTop = "30px";    
         } else {
@@ -80,7 +80,7 @@ function render() {
     finalizeParagraph(p);
 }
 
-// 🧠 互动批改区
+// 🧠 核心习题区：全面升级为 DeepSeek 高效批改引擎
 function renderQuestions() {
     if (typeof lessonQuestions === 'undefined' || lessonQuestions.length === 0) return;
 
@@ -193,58 +193,61 @@ function renderQuestions() {
             submitBtn.innerText = ansBox.style.display === "block" ? "收起标准答案 ❌" : "查看标准答案 📋";
         };
 
-        // 🚀 核心更新：精准采用 image_31f9a1.png 里的最新 gemini-3.5-flash 模型进行数据呼叫
+        // 🚀 核心更新：完全重构为 DeepSeek 官方标准的 Fetch 通信协议
         aiBtn.onclick = async function() {
             const studentAns = textarea.value.trim();
             if (!studentAns) { alert("请先输入您的作答哦！"); return; }
 
+            // 变量名虽然保留了 gemini 以兼容本地存储，但实际输入 DeepSeek Key 即可
             let apiKey = localStorage.getItem("gemini_api_key");
             if (!apiKey) {
-                apiKey = prompt("🤖 首次使用请输入您的 Gemini API Key:");
+                apiKey = prompt("🤖 首次使用请输入您的 DeepSeek API Key:\n（密钥将安全保存在您的本地浏览器中）");
                 if (!apiKey) return;
                 localStorage.setItem("gemini_api_key", apiKey.trim());
             }
 
             aiBox.style.display = "block";
-            aiBox.innerHTML = "<span style='color:#34495e;'>⏳ AI 老师正在线上精细批改中...</span>";
+            aiBox.innerHTML = "<span style='color:#34495e;'>⏳ AI 老师正在运用 DeepSeek 深度审阅作答，请稍候...</span>";
             aiBtn.disabled = true;
 
-            const promptText = `你是一位严谨的华文老师。请根据以下信息进行精细批改：
-题目：${q.question} [满分 ${q.score} 分]
-参考评分标准：${q.modelAnswer}
-学生作答："${studentAns}"
-请直接输出得分、采分点拆解以及改进建议。`;
-
             try {
-                // 🎯 完美同步官方最新生产模型：gemini-3.5-flash
-                const officialUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent?key=${apiKey}`;
-
-                const response = await fetch(officialUrl, {
+                // 🎯 换用 DeepSeek 官方全球标准的通用接口与目前最擅长逻辑批改的 deepseek-chat 模型
+                const response = await fetch("https://api.deepseek.com/v1/chat/completions", {
                     method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ contents: [{ parts: [{ text: promptText }] }] })
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": "Bearer " + apiKey
+                    },
+                    body: JSON.stringify({
+                        model: "deepseek-chat",
+                        messages: [
+                            { role: "system", content: "你是一位严谨的华文老师。请根据题目、参考评分标准与学生作答，给出极其地道的得分和评语建议。" },
+                            { role: "user", content: `题目：${q.question} [满分 ${q.score} 分]\n参考评分标准：${q.modelAnswer}\n学生作答："${studentAns}"\n请直接输出得分、采分点拆解以及改进建议。` }
+                        ],
+                        stream: false
+                    })
                 });
 
                 if (!response.ok) {
                     const errData = await response.json();
-                    throw new Error(errData.error ? errData.error.message : "未通过官方接口验证");
+                    throw new Error(errData.error ? errData.error.message : "连接被 DeepSeek 网关拒绝");
                 }
 
                 const data = await response.json();
-                if (data && data.candidates && data.candidates[0].content.parts[0].text) {
-                    let aiReply = data.candidates[0].content.parts[0].text;
+                if (data && data.choices && data.choices[0].message.content) {
+                    let aiReply = data.choices[0].message.content;
                     let formattedReply = aiReply
                         .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
                         .replace(/\*(.*?)\*/g, '<em>$1</em>');
 
-                    aiBox.innerHTML = `<strong>🤖 AI 老师网页内批改报告：</strong><br><div style="margin-top:8px; white-space: pre-line; line-height:1.6; color:#2c3e50;">${formattedReply}</div>`;
+                    aiBox.innerHTML = `<strong>🤖 DeepSeek 老师精细批改报告：</strong><br><div style="margin-top:8px; white-space: pre-line; line-height:1.6; color:#2c3e50;">${formattedReply}</div>`;
                 } else {
-                    throw new Error("返回的数据结构异常，请检查 API 状态。");
+                    throw new Error("返回的数据结构异常，请检查接口状态。");
                 }
             } catch (err) {
                 aiBox.innerHTML = `<span style='color:#e74c3c;'>❌ 批改失败！<br>
                 <strong>技术报错原因：</strong>${err.message || err}<br>
-                <small>解决办法：请使用 Clear Data 彻底清理旧代码缓存后重试。</small></span>`;
+                <small>解决办法：请使用 Clear Data 清除旧缓存，并检查新 Key 是否激活。</small></span>`;
                 console.error(err);
             } finally {
                 aiBtn.disabled = false;
