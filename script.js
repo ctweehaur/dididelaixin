@@ -1,20 +1,6 @@
-// ==================== 🛠️ 以后换课文，只改这里的数据 ====================
-const lessonTitle = "不孬";
+const lessonTitle = "弟弟的来信";
 
 const lessonData = [
-    // 第 1 段（合并作者出处副标题，完美触发前端智能渲染）
-    ["（", "", "", ""],
-    ["于心亮", "yú xīn liàng", "Yu Xinliang (Author)", "Yu Xinliang (Penulis)"],
-    ["《", "", "", ""],
-    ["弟弟的来信", "dì di de lái xìn", "My Brother's Letter", "Surat Kiriman Adik Laki-laki"],
-    ["》", "", "", ""],
-    ["，", "", "", ""],
-    ["有", "yǒu", "with / has", "ada"],
-    ["改动", "gǎi dòng", "adaptations / modifications", "perubahan / ubah suai"],
-    ["）", "", "", ""],
-
-    ["\n", "", "", ""], // 👈 切入正文第 1 段（页面上会显示为“第1段”）
-
     // 正文第 1 段
     ["师范", "shī fàn", "normal school / teacher's college", "maktab perguruan"],
     ["毕业", "bì yè", "graduate", "graduat"],
@@ -64,9 +50,8 @@ const lessonData = [
     ["地方", "dì fang", "place", "tempat"],
     ["。", "”", "", ""],
 
-    ["\n", "", "", ""], // 👈 切入正文第 2 段
+    ["\n", "", "", ""], // 👈 第 2 段
 
-    // 正文第 2 段
     ["一天", "yì tiān", "one day", "satu hari"],
     ["后", "hòu", "after", "selepas"],
     ["，", "", "", ""],
@@ -92,7 +77,7 @@ const lessonData = [
     ["“", "", "", ""],
     ["咋", "zǎ", "how / what", "kenapa / mengapa"],
     ["？", "", "", ""],
-    ["不是", "bú shì", "not", "bukan"],
+    ["not", "bú shì", "not", "bukan"],
     ["人", "rén", "human", "manusia"],
     ["待", "dāi", "stay", "tinggal"],
     ["的", "de", "particle", "yang"],
@@ -125,9 +110,8 @@ const lessonData = [
     ["腿", "tuǐ", "leg", "kaki"],
     ["！", "”", "", ""],
 
-    ["\n", "", "", ""], // 👈 切入正文第 3 段
+    ["\n", "", "", ""], // 👈 第 3 段
 
-    // 正文第 3 段
     ["于是", "yú shì", "so / therefore", "maka / oleh itu"],
     ["我就", "wǒ jiù", "I then", "saya pun"],
     ["不能", "bù néng", "cannot", "tidak dapat"],
@@ -157,11 +141,9 @@ const lessonData = [
     ["的", "de", "particle", "yang"],
     ["地方", "dì fang", "place", "tempat"],
     ["，", "", "", ""],
-    ["没有", "méi yǒu", "no / without", "tiada"],
-    ["电", "diàn", "electricity", "bekalan elektrik"],
+    ["停电", "tíng diàn", "no electricity", "tiada bekalan elektrik"],
     ["，", "", "", ""],
-    ["没有", "méi yǒu", "no / without", "tiada"],
-    ["水", "shuǐ", "water", "bekalan air"],
+    ["停水", "tíng shuǐ", "no water", "tiada bekalan air"],
     ["，", "", "", ""],
     ["如果", "rú guǒ", "if", "jika / sekiranya"],
     ["拍", "pāi", "film / shoot", "merakam / membuat penggambaran"],
@@ -184,10 +166,9 @@ const lessonData = [
     ["放狗屁", "fàng gǒu pì", "nonsense / bullshit (lit. farting like a dog)", "cakap merapu / karut / omong kosong"],
     ["！", "”", "", ""],
 
-    ["\n", "", "", ""], // 👈 切入正文第 4 段
+    ["\n", "", "", ""], // 👈 第 4 段
 
-    // 正文第 4 段
-    ["Later", "hòu lái", "later on", "kemudian / lama-kelamaan"],
+    ["后来", "hòu lái", "later on", "kemudian / lama-kelamaan"],
     ["弟弟", "dì di", "younger brother", "adik lelaki"],
     ["又", "yòu", "again", "lagi"],
     ["来信", "lái xìn", "wrote a letter", "menghantar surat"],
@@ -264,9 +245,8 @@ const lessonData = [
     ["三年灾荒时期", "sān nián zāi huāng shí qī", "Three Years of Great Famine", "Tempoh Tiga Tahun Kebuluran Besar"],
     ["。", "", "", ""],
 
-    ["\n", "", "", ""], // 👈 切入正文第 5 段
+    ["\n", "", "", ""], // 👈 第 5 段
 
-    // 正文第 5 段
     ["再", "zài", "even / further", "kemudian"],
     ["后来", "hòu lái", "later", "selepas itu"],
     ["，", "", "", ""],
@@ -314,9 +294,8 @@ const lessonData = [
     ["吧", "ba", "particle", ""],
     ["！", "”", "", ""],
 
-    ["\n", "", "", ""], // 👈 切入正文第 6 段
+    ["\n", "", "", ""], // 👈 第 6 段
 
-    // 正文第 6 段
     ["爹", "diē", "dad", "Ayah"],
     ["把", "bǎ", "structural particle", ""],
     ["坎肩", "kǎn jiān", "vest", "ves bulu"],
@@ -362,9 +341,8 @@ const lessonData = [
     ["牵挂", "qiān guà", "worry / be anxious about", "bimbang / risau / ingat-ingatan"],
     ["。", "”", "", ""],
 
-    ["\n", "", "", ""], // 👈 切入正文第 7 段
+    ["\n", "", "", ""], // 👈 第 7 段
 
-    // 正文第 7 段
     ["那件", "nà jiàn", "that piece of", "baju helai itu"],
     ["黄鼠狼皮", "huáng shǔ láng pí", "weasel skin", "kulit musang"],
     ["坎肩", "kǎn jiān", "vest", "ves"],
@@ -439,9 +417,8 @@ const lessonData = [
     ["哪儿", "nǎ r", "there", "di situ"],
     ["！", "”", "", ""],
 
-    ["\n", "", "", ""], // 👈 切入正文第 8 段
+    ["\n", "", "", ""], // 👈 第 8 段
 
-    // 正文第 8 段
     ["没有", "méi yǒu", "no / lack of", "Tiada"],
     ["粉笔", "fěn bǐ", "chalk", "kapur tulis"],
     ["使用", "shǐ yòng", "use", "untuk digunakan"],
@@ -517,9 +494,8 @@ const lessonData = [
     ["休学", "xiū xué", "drop out of school / suspend schooling", "berhenti sekolah / menangguhkan sekolah"],
     ["！", "”", "", ""],
 
-    ["\n", "", "", ""], // 👈 切入正文第 9 段
+    ["\n", "", "", ""], // 👈 第 9 段
 
-    // 正文第 9 段
     ["再", "zài", "more / further", "Kemudian"],
     ["后来", "hòu lái", "later", "selepas itu"],
     ["的", "de", "particle", "punya"],
@@ -607,9 +583,8 @@ const lessonData = [
     ["哭了", "kū le", "cried", "menangis"],
     ["。", "", "", ""],
 
-    ["\n", "", "", ""], // 👈 切入正文第 10 段
+    ["\n", "", "", ""], // 👈 第 10 段
 
-    // 正文第 10 段
     ["过春节", "guò chūn jié", "celebrate Spring Festival", "menyambut Tahun Baru Cina"],
     ["的", "de", "particle", "yang"],
     ["时候", "shí hou", "time", "masa / ketika"],
@@ -652,9 +627,8 @@ const lessonData = [
     ["去了", "qù le", "went", "pergi"],
     ["。", "", "", ""],
 
-    ["\n", "", "", ""], // 👈 切入正文第 11 段
+    ["\n", "", "", ""], // 👈 第 11 段
 
-    // 正文第 11 段
     ["爹", "diē", "dad", "Ayah"],
     ["是", "shì", "was (emphasize)", "sememangnya"],
     ["哭着", "kū zhe", "crying", "sambil menangis"],
@@ -731,7 +705,7 @@ const lessonData = [
     ["：", "", "", ""],
     ["“", "", "", ""],
     ["那", "nà", "that", "itu"],
-    ["not", "bú shì", "is not", "bukan"],
+    ["不是", "bú shì", "is not", "bukan"],
     ["人", "rén", "human", "manusia"],
     ["待", "dāi", "stay", "tinggal"],
     ["的", "de", "particle", "yang"],
@@ -807,7 +781,20 @@ const lessonData = [
     ["，", "", "", ""],
     ["很", "hěn", "very", "sangat"],
     ["美丽", "měi lì", "beautiful", "indah / cantik"],
-    ["……", "”", "", ""]
+    ["……", "”", "", ""],
+
+    ["\n", "", "", ""], // 👈 分段标记，切入文末作者出处
+
+    // 🎯 独立出来的文末作者出处（等下我们在 JS 里让它靠右对齐）
+    ["（", "", "", ""],
+    ["于心亮", "yú xīn liàng", "Yu Xinliang (Author)", "Yu Xinliang (Penulis)"],
+    ["《", "", "", ""],
+    ["弟弟的来信", "dì di de lái xìn", "My Brother's Letter", "Surat Kiriman Adik Laki-laki"],
+    ["》", "", "", ""],
+    ["，", "", "", ""],
+    ["有", "yǒu", "with / has", "ada"],
+    ["改动", "gǎi dòng", "adaptations / modifications", "perubahan / ubah suai"],
+    ["）", "", "", ""]
 ];
 // =====================================================================
 
@@ -840,20 +827,20 @@ function render() {
     let pNum = 1; 
     let p = document.createElement("p"); 
     
-    // 🚀 智能段落综合渲染器：自动处理“作者副标题”与“正文段落编号”
+    // 🚀 智能段落综合渲染器：自动让文末的作者出处右对齐变灰，且不带段落编号
     function finalizeParagraph(paragraphElement) {
         if (paragraphElement.childNodes.length === 0) return;
         
         const textContent = paragraphElement.innerText.trim();
-        const isAuthorLine = (pNum === 1 && (textContent.startsWith("作者") || textContent.includes("作者：")));
+        // 🎯 核心判断：如果最后一段是以括号开头且包含书名号，判定为文末出处行
+        const isAuthorLineAtEnd = (textContent.startsWith("（") && textContent.includes("《"));
         
-        if (isAuthorLine) {
+        if (isAuthorLineAtEnd) {
             paragraphElement.style.textIndent = "0";
-            paragraphElement.style.textAlign = "center";
-            paragraphElement.style.color = "#666666";
-            paragraphElement.style.fontSize = "16px";
-            paragraphElement.style.marginTop = "-15px";  
-            paragraphElement.style.marginBottom = "35px"; 
+            paragraphElement.style.textAlign = "right";  // 右对齐
+            paragraphElement.style.color = "#7f8c8d";    // 优雅灰色
+            paragraphElement.style.fontSize = "15px";     // 字体略小
+            paragraphElement.style.marginTop = "30px";    // 与正文拉开间距
         } else {
             let s = document.createElement("span");
             s.className = "p-index";
@@ -1049,4 +1036,3 @@ function togglePinyin() {
 function toggleTheme() { 
     document.documentElement.setAttribute('data-theme', document.documentElement.getAttribute('data-theme')==='dark'?'':'dark'); 
 }
-
