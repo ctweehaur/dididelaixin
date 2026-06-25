@@ -220,11 +220,19 @@ function renderQuestions() {
         };
 
         // 【方案B精髓】：直连云端 Gemini 的 AI 批改在线逻辑（彻底解决了 reading '0' 报错）
-        aiBtn.onclick = async function() {
+      // 🚀 最终方案：抛弃 fetch，改为一键呼叫 AI 助手
+        aiBtn.onclick = function() {
             const studentAns = textarea.value.trim();
             if (!studentAns) {
-                alert("请先输入您的作答，再让 AI 老师批改哦！");
+                alert("请先写下答案哦！");
                 return;
+            }
+            // 将题目和答案直接格式化好，点击跳转到 Gemini 官网进行批改
+            const promptContent = `我是一个学生，题目是：${q.question}。我的答案是：${studentAns}。请你像老师一样帮我批改，并给出得分和改进建议。`;
+            const encodedPrompt = encodeURIComponent(promptContent);
+            const url = `https://gemini.google.com/app?q=${encodedPrompt}`;
+            window.open(url, '_blank'); // 直接跳去 Gemini 官网，那里网络最通畅！
+        };
             }
 
             // 【安全逻辑】：首次使用进行弹窗要求绑定 API Key，随后永久存入抽屉记忆
