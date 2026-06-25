@@ -1,5 +1,5 @@
 // ==========================================================================
-// ⚙️ 全互动式华文教学系统阅读器大脑 - script.js (2026 网页内 API 修复版)
+// ⚙️ 全互动式华文教学系统阅读器大脑 - script.js (2026 智能双保险修复版)
 // ==========================================================================
 
 let currentIdx = -1; 
@@ -24,7 +24,7 @@ window.onload = function() {
     });
 };
 
-// 📖 正文渲染
+// 📖 正文渲染器
 function render() {
     const cnt = document.getElementById('content'); 
     cnt.innerHTML = "";
@@ -78,7 +78,7 @@ function render() {
     finalizeParagraph(p);
 }
 
-// 🧠 网页内批改互动区
+// 🧠 智能双保险批改互动区
 function renderQuestions() {
     if (typeof lessonQuestions === 'undefined' || lessonQuestions.length === 0) return;
 
@@ -186,7 +186,7 @@ function renderQuestions() {
             submitBtn.innerText = ansBox.style.display === "block" ? "收起标准答案 ❌" : "查看标准答案 📋";
         };
 
-        // 🚀 网页内直接连接高相容免费层通道
+        // 🚀 核心：智能多通道自动切换网络引擎
         aiBtn.onclick = async function() {
             const studentAns = textarea.value.trim();
             if (!studentAns) { alert("请先输入您的作答哦！"); return; }
@@ -199,7 +199,7 @@ function renderQuestions() {
             }
 
             aiBox.style.display = "block";
-            aiBox.innerHTML = "<span style='color:#34495e;'>⏳ AI 老师正在线上批改中，请稍候...</span>";
+            aiBox.innerHTML = "<span style='color:#34495e;'>⏳ AI 老师正在线上精细批改中...</span>";
             aiBtn.disabled = true;
 
             const promptText = `你是一位严谨的华文老师。请根据以下信息进行精细批改：
@@ -208,36 +208,55 @@ function renderQuestions() {
 学生作答："${studentAns}"
 请直接输出得分、采分点拆解以及改进建议。`;
 
-            try {
-                // 使用对新项目 Key 兼容性最好的标准文本接口
-                const targetUrl = "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=" + apiKey;
+            // 定义多通道备用 URL 列表（第一通道不行，自动进第二通道）
+            const urls = [
+                "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=" + apiKey,
+                "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=" + apiKey
+            ];
 
-                const response = await fetch(targetUrl, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ contents: [{ parts: [{ text: promptText }] }] })
-                });
+            let success = false;
+            let finalError = "";
 
-                if (!response.ok) {
-                    const errData = await response.json();
-                    throw new Error(errData.error ? errData.error.message : "API 被谷歌服务器拦截");
+            // 循环尝试各个通道
+            for (let i = 0; i < urls.length; i++) {
+                try {
+                    if (i > 0) {
+                        aiBox.innerHTML = "<span style='color:#e67e22;'>🔄 正在自动为您切换至万能高兼容通道...</span>";
+                    }
+                    
+                    const response = await fetch(urls[i], {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ contents: [{ parts: [{ text: promptText }] }] })
+                    });
+
+                    if (!response.ok) {
+                        const errData = await response.json();
+                        throw new Error(errData.error ? errData.error.message : "通道拒绝");
+                    }
+
+                    const data = await response.json();
+                    if (data && data.candidates && data.candidates[0].content.parts[0].text) {
+                        let aiReply = data.candidates[0].content.parts[0].text;
+                        let formattedReply = aiReply
+                            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                            .replace(/\*(.*?)\*/g, '<em>$1</em>');
+
+                        aiBox.innerHTML = `<strong>🤖 AI 老师网页内批改报告：</strong><br><div style="margin-top:8px; white-space: pre-line; line-height:1.6; color:#2c3e50;">${formattedReply}</div>`;
+                        success = true;
+                        break; // 成功后立刻跳出循环
+                    }
+                } catch (err) {
+                    console.warn(`通道 ${i+1} 失败:`, err.message);
+                    finalError = err.message;
                 }
-
-                const data = await response.json();
-                let aiReply = data.candidates[0].content.parts[0].text;
-                
-                let formattedReply = aiReply
-                    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-                    .replace(/\*(.*?)\*/g, '<em>$1</em>');
-
-                aiBox.innerHTML = `<strong>🤖 AI 老师网页内批改报告：</strong><br><div style="margin-top:8px; white-space: pre-line; line-height:1.6; color:#2c3e50;">${formattedReply}</div>`;
-            } catch (err) {
-                aiBox.innerHTML = `<span style='color:#e74c3c;'>❌ 批改失败！<br>
-                <strong>技术报错原因：</strong>${err.message || err}</span>`;
-                console.error(err);
-            } finally {
-                aiBtn.disabled = false;
             }
+
+            if (!success) {
+                aiBox.innerHTML = `<span style='color:#e74c3c;'>❌ 批改失败！<br>
+                <strong>技术报错原因：</strong>${finalError}</span>`;
+            }
+            aiBtn.disabled = false;
         };
 
         textarea.oninput = function() {
