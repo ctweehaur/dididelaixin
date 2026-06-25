@@ -251,8 +251,9 @@ ${q.type === 'summary' ? `背景短文：${q.context}` : ''}
 <strong>【得分点拆解】</strong>：(简述学生写对了哪些采分点，扣分点在哪)
 <strong>【给同学的改进建议】</strong>：(一两句精炼的评语)`;
 
-            try {
-                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+           try {
+                // 🎯 彻底根除了路径重复叠加的 Bug
+                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/gemini-1.5-flash:generateContent?key=${apiKey}`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ contents: [{ parts: [{ text: promptText }] }] })
