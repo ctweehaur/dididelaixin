@@ -77,8 +77,8 @@ function renderQuestions() {
             aiBox.style.display = "block"; aiBox.innerText = "⏳ 正在连接 AI..."; aiBtn.disabled = true;
 
             try {
-                // 修正路径：确保使用官方标准路径
-                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${key}`, {
+              // 🎯 终极修正路径：完整模型名路径
+                    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${key}`, {
                     method: "POST", headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ contents: [{ parts: [{ text: `题目：${q.question}\n标准：${q.modelAnswer}\n答案：${val}\n请给分并给出建议。` }] }] })
                 });
