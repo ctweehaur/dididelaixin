@@ -187,7 +187,7 @@ const lessonData = [
     ["的", "de", "particle", "yang"],
     ["肉块", "ròu kuài", "meat chunks", "ketulan daging"],
     ["，", "", "", ""],
-    ["because", "yīn wèi", "because", "kerana"],
+    ["因为", "yīn wèi", "because", "kerana"],
     ["他们的", "tā men de", "their", "mereka punya"],
     ["孩子", "hái zi", "children", "anak-anak"],
     ["认字", "rèn zì", "learn to read / recognize characters", "mengenal huruf / celik huruf"],
