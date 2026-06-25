@@ -1,5 +1,5 @@
 // ==========================================================================
-// ⚙️ 全互动式华文教学系统阅读器大脑 - script.js (2026 官方最新 API 规范版)
+// ⚙️ 全互动式华文教学系统阅读器大脑 - script.js (2026 习题修复终极版)
 // ==========================================================================
 
 let currentIdx = -1; 
@@ -80,7 +80,7 @@ function render() {
     finalizeParagraph(p);
 }
 
-// 🧠 核心习题区：严格对齐 Google ai.google.dev 2026 最新官方标准接口
+// 🧠 核心习题区：支持本地持久化保存与谷歌官方最新 API 规范批改（安全兼容版）
 function renderQuestions() {
     if (typeof lessonQuestions === 'undefined' || lessonQuestions.length === 0) return;
 
@@ -111,10 +111,25 @@ function renderQuestions() {
         qText.style.fontSize = "16px";
         qBox.appendChild(qText);
 
+        // 如果是概述或缩写题并且有背景短文
+        if (q.context) {
+            const block = document.createElement("blockquote");
+            block.innerText = q.context;
+            block.style.background = "#f8f9fa";
+            block.style.borderLeft = "4px solid #3498db";
+            block.style.padding = "12px 15px";
+            block.style.margin = "10px 0";
+            block.style.fontSize = "14px";
+            block.style.color = "#555";
+            block.style.borderRadius = "4px";
+            qBox.appendChild(block);
+        }
+
         const textarea = document.createElement("textarea");
-        textarea.placeholder = "请在此处输入您的答案...";
+        // 🛠️ 安全修复判断：防止 q.type 未定义导致系统崩溃
+        textarea.placeholder = (q.type && q.type === "summary") ? "请在此处输入您的概述答案（注意不超过60字）..." : "请在此处输入您的答案...";
         textarea.style.width = "100%";
-        textarea.style.height = "80px";
+        textarea.style.height = (q.type && q.type === "summary") ? "110px" : "80px";
         textarea.style.padding = "10px";
         textarea.style.marginTop = "10px";
         textarea.style.boxSizing = "border-box";
@@ -135,6 +150,11 @@ function renderQuestions() {
         const counter = document.createElement("div");
         counter.style.fontSize = "13px";
         counter.style.color = "#7f8c8d";
+        
+        // 动态创建实时计字容器
+        if (q.type && q.type === "summary") {
+            counter.innerHTML = `当前字数：<span id="charCount_${q.id}">0</span> / 60 字`;
+        }
         controlRow.appendChild(counter);
 
         const btnGroup = document.createElement("div");
@@ -191,7 +211,7 @@ function renderQuestions() {
             submitBtn.innerText = ansBox.style.display === "block" ? "收起标准答案 ❌" : "查看标准答案 📋";
         };
 
-        // 🚀 核心：完全遵循官方最新 api-key 文档标准的 Fetch 架构
+        // 🚀 核心：对齐 ai.google.dev 最新官方标准规范的接口请求
         aiBtn.onclick = async function() {
             const studentAns = textarea.value.trim();
             if (!studentAns) {
@@ -217,7 +237,7 @@ function renderQuestions() {
 请直接输出得分、采分点拆解以及改进建议。`;
 
             try {
-                // 🎯 终极权威端点：严格对齐官方文档推荐的官方生产别名规范
+                // 🎯 权威端点：使用官方指定支持免费层新项目的生产别名后缀规范
                 const officialUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`;
 
                 const response = await fetch(officialUrl, {
@@ -252,9 +272,27 @@ function renderQuestions() {
             }
         };
 
+        // 高精度华文计字函数
+        function updateCharCount() {
+            if (q.type && q.type === "summary") {
+                const text = textarea.value;
+                const matched = text.match(/[\u4e00-\u9fa5\w\d\u3000-\u303f\uff00-\uffef]/g);
+                const count = matched ? matched.length : 0;
+                const countEl = document.getElementById(`charCount_${q.id}`);
+                if (countEl) {
+                    countEl.innerText = count;
+                    countEl.style.color = count > 60 ? "#e74c3c" : "#27ae60";
+                }
+            }
+        }
+
         textarea.oninput = function() {
             localStorage.setItem(`ans_${q.id}`, textarea.value);
+            updateCharCount();
         };
+        setTimeout(updateCharCount, 100);
+
+        qCard.appendChild(qBox);
     });
 
     cnt.appendChild(qCard);
