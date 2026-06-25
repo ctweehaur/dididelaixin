@@ -2,7 +2,7 @@ const lessonTitle = "弟弟的来信";
 
 const lessonData = [
     // 正文第 1 段
-    ["师范", "shī fàn", "normal school / teacher's college", "maktab perguruan"],
+    ["师范", "shī fàn", "teacher's college", "maktab perguruan"],
     ["毕业", "bì yè", "graduate", "graduat"],
     ["的", "de", "particle", "yang"],
     ["弟弟", "dì di", "younger brother", "adik lelaki"],
