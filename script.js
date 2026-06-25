@@ -1,5 +1,5 @@
 // ==========================================================================
-// ⚙️ 全互动式华文教学系统阅读器大脑 - script.js (2026 习题修复终极版)
+// ⚙️ 全互动式华文教学系统阅读器大脑 - script.js (2026 智能 Gemini 3.5 版)
 // ==========================================================================
 
 let currentIdx = -1; 
@@ -80,12 +80,11 @@ function render() {
     finalizeParagraph(p);
 }
 
-// 🧠 核心习题区：支持本地持久化保存与谷歌官方最新 API 规范批改（安全兼容版）
+// 🧠 互动批改区
 function renderQuestions() {
     if (typeof lessonQuestions === 'undefined' || lessonQuestions.length === 0) return;
 
     const cnt = document.getElementById('content');
-
     const qCard = document.createElement("div");
     qCard.style.marginTop = "40px";
     qCard.style.padding = "25px";
@@ -111,22 +110,7 @@ function renderQuestions() {
         qText.style.fontSize = "16px";
         qBox.appendChild(qText);
 
-        // 如果是概述或缩写题并且有背景短文
-        if (q.context) {
-            const block = document.createElement("blockquote");
-            block.innerText = q.context;
-            block.style.background = "#f8f9fa";
-            block.style.borderLeft = "4px solid #3498db";
-            block.style.padding = "12px 15px";
-            block.style.margin = "10px 0";
-            block.style.fontSize = "14px";
-            block.style.color = "#555";
-            block.style.borderRadius = "4px";
-            qBox.appendChild(block);
-        }
-
         const textarea = document.createElement("textarea");
-        // 🛠️ 安全修复判断：防止 q.type 未定义导致系统崩溃
         textarea.placeholder = (q.type && q.type === "summary") ? "请在此处输入您的概述答案（注意不超过60字）..." : "请在此处输入您的答案...";
         textarea.style.width = "100%";
         textarea.style.height = (q.type && q.type === "summary") ? "110px" : "80px";
@@ -150,8 +134,6 @@ function renderQuestions() {
         const counter = document.createElement("div");
         counter.style.fontSize = "13px";
         counter.style.color = "#7f8c8d";
-        
-        // 动态创建实时计字容器
         if (q.type && q.type === "summary") {
             counter.innerHTML = `当前字数：<span id="charCount_${q.id}">0</span> / 60 字`;
         }
@@ -211,23 +193,20 @@ function renderQuestions() {
             submitBtn.innerText = ansBox.style.display === "block" ? "收起标准答案 ❌" : "查看标准答案 📋";
         };
 
-        // 🚀 核心：对齐 ai.google.dev 最新官方标准规范的接口请求
+        // 🚀 核心更新：精准采用 image_31f9a1.png 里的最新 gemini-3.5-flash 模型进行数据呼叫
         aiBtn.onclick = async function() {
             const studentAns = textarea.value.trim();
-            if (!studentAns) {
-                alert("请先输入您的作答，再让 AI 老师批改哦！");
-                return;
-            }
+            if (!studentAns) { alert("请先输入您的作答哦！"); return; }
 
             let apiKey = localStorage.getItem("gemini_api_key");
             if (!apiKey) {
-                apiKey = prompt("🤖 首次使用请输入您的 Gemini API Key:\n（密钥将安全保存在您的本地浏览器中）");
+                apiKey = prompt("🤖 首次使用请输入您的 Gemini API Key:");
                 if (!apiKey) return;
                 localStorage.setItem("gemini_api_key", apiKey.trim());
             }
 
             aiBox.style.display = "block";
-            aiBox.innerHTML = "<span style='color:#34495e;'>⏳ AI 老师正在线上精细批改中，请稍候...</span>";
+            aiBox.innerHTML = "<span style='color:#34495e;'>⏳ AI 老师正在线上精细批改中...</span>";
             aiBtn.disabled = true;
 
             const promptText = `你是一位严谨的华文老师。请根据以下信息进行精细批改：
@@ -237,8 +216,8 @@ function renderQuestions() {
 请直接输出得分、采分点拆解以及改进建议。`;
 
             try {
-                // 🎯 权威端点：使用官方指定支持免费层新项目的生产别名后缀规范
-                const officialUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`;
+                // 🎯 完美同步官方最新生产模型：gemini-3.5-flash
+                const officialUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent?key=${apiKey}`;
 
                 const response = await fetch(officialUrl, {
                     method: "POST",
@@ -248,7 +227,7 @@ function renderQuestions() {
 
                 if (!response.ok) {
                     const errData = await response.json();
-                    throw new Error(errData.error ? errData.error.message : "未通过官方接口安全限制");
+                    throw new Error(errData.error ? errData.error.message : "未通过官方接口验证");
                 }
 
                 const data = await response.json();
@@ -272,7 +251,7 @@ function renderQuestions() {
             }
         };
 
-        // 高精度华文计字函数
+        // 高精度华文计字
         function updateCharCount() {
             if (q.type && q.type === "summary") {
                 const text = textarea.value;
@@ -311,19 +290,11 @@ function openPop(el, i) {
     if (left < 15) left = 15;
     arrow.style.left = `${(rect.left + rect.width / 2) - left}px`; pop.style.top = `${top}px`; pop.style.left = `${left}px`;
 }
-
 function saveToNotebook(e) { e.stopPropagation(); if (!saved.includes(currentIdx)) { saved.push(currentIdx); localStorage.setItem('saved_104', JSON.stringify(saved)); renderNB(); } const btn = e.target; btn.innerText = "✓ 已存"; setTimeout(() => btn.innerText = "Copy 📋", 1000); }
-
 function renderNB() { const list = document.getElementById('notebookList'); if (saved.length === 0) { list.innerHTML = "<span style='color:#999; font-size:13px;'>点击词语 Copy 记录生词</span>"; } else { list.innerHTML = ""; saved.forEach(idx => { const item = lessonData[idx]; if(!item) return; const div = document.createElement("div"); div.className = "notebook-item"; div.innerText = item[0]; div.onclick = (e) => { e.stopPropagation(); const target = document.querySelector(`ruby[data-word-index="${idx}"]`); if(target) { target.scrollIntoView({behavior: "smooth", block: "center"}); document.querySelectorAll('ruby').forEach(r => r.classList.remove('is-active')); setTimeout(() => { target.classList.add('is-active'); openPop(target, idx); }, 500); } }; list.appendChild(div); }); } }
-
 function forceClearNotebook() { localStorage.removeItem('saved_104'); saved = []; renderNB(); document.getElementById('gameContainer').style.display = 'none'; document.getElementById('gameToggleBtn').innerText = "🎯 生词测试"; }
-
 function toggleGameMode() { const container = document.getElementById('gameContainer'); const btn = document.getElementById('gameToggleBtn'); if (container.style.display === 'block') { container.style.display = 'none'; btn.innerText = "🎯 生词测试"; } else { if (saved.length < 1) { alert("生词本是空的哦！"); return; } container.style.display = 'block'; btn.innerText = "📖 返回课文"; startQuizGame(); container.scrollIntoView({behavior: "smooth"}); } }
-
 function startQuizGame() { quizData = [...saved].sort(() => Math.random() - 0.5); currentQuizIdx = 0; loadQuestion(); }
-
 function loadQuestion() { isLocked = false; const targetIdx = quizData[currentQuizIdx]; const data = lessonData[targetIdx]; document.getElementById('quizProgress').innerText = `第 ${currentQuizIdx + 1} / ${quizData.length} 题`; document.getElementById('quizQuestion').innerText = data[0]; document.getElementById('quizPinyin').innerText = `[${data[1]}]`; const correctStr = (data[2].trim() + "；" + data[3].trim()); let options = [correctStr]; let others = lessonData.filter(d => d[1] !== "" && d[0] !== data[0]).map(d => (d[2].trim() + "；" + d[3].trim())); others = [...new Set(others)].filter(s => s !== correctStr).sort(() => Math.random() - 0.5); for(let i=0; i<3; i++) { if(others[i]) options.push(others[i]); } options.sort(() => Math.random() - 0.5); const optDiv = document.getElementById('quizOptions'); optDiv.innerHTML = ""; options.forEach(opt => { const b = document.createElement('button'); b.className = 'quiz-opt-btn'; b.innerText = opt; b.onclick = () => { if(isLocked || b.classList.contains('wrong')) return; if(opt.trim() === correctStr.trim()) { isLocked = true; b.classList.add('correct'); setTimeout(() => { currentQuizIdx++; if(currentQuizIdx < quizData.length) loadQuestion(); else { alert("🎉 完成测试！你真棒！"); toggleGameMode(); } }, 800); } else { b.classList.add('wrong'); } }; optDiv.appendChild(b); }); }
-
 function togglePinyin() { document.getElementById('content').classList.toggle('hide-pinyin'); document.getElementById('pyToggle').classList.toggle('active'); }
-
 function toggleTheme() { document.documentElement.setAttribute('data-theme', document.documentElement.getAttribute('data-theme')==='dark'?'':'dark'); }
