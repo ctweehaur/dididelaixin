@@ -254,7 +254,10 @@ ${q.type === 'summary' ? `背景短文：${q.context}` : ''}
                 // 将 Markdown 格式优雅地转换为网页换行
                 aiBox.innerHTML = `<strong>🤖 AI 老师线上批改报告：</strong><br><div style="margin-top:8px; white-space: pre-line; line-height:1.6;">${aiReply}</div>`;
             } catch (err) {
-                aiBox.innerHTML = "<span style='color:#e74c3c;'>❌ 批改失败：请检查网络或确认您的 API Key 是否有效。可以通过清空浏览器缓存重新绑定。</span>";
+                // 🚀 升级版听诊器：把具体的错误原因打印在网页上，方便我们排查
+                aiBox.innerHTML = `<span style='color:#e74c3c;'>❌ 批改失败！<br>
+                <strong>可能原因：</strong>网络被学校/公司网络阻挡，或密钥复制时带了空格。<br>
+                <strong>技术报错信息：</strong>${err.message || err}</span>`;
                 console.error(err);
             } finally {
                 aiBtn.disabled = false;
