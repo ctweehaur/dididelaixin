@@ -1,9 +1,9 @@
 /* ==========================================================================
-   🎨 现代华文学习平台全局样式 - style.css (2026 极致美化版)
+   🎨 现代华文学习平台全局样式 - style.css (2026 极致美化国风版)
    ========================================================================== */
 
 :root {
-    --bg-color: linear-gradient(135deg, #f4f7f6 0%, #eaefed 100%); /* 莫兰迪雅致淡绿灰渐变，护眼高级 */
+    --bg-color: linear-gradient(135deg, #f4f7f6 0%, #eaefed 100%); /* 护眼莫兰迪柔和微渐变 */
     --text-color: #2c3e50;
     --card-bg: #ffffff;
     --primary-color: #34495e;
@@ -65,13 +65,6 @@ body {
 .control-panel button:hover {
     transform: translateY(-2px);
     box-shadow: 0 6px 12px rgba(44, 62, 80, 0.08);
-}
-
-.control-panel button#pyToggle.active {
-    background: #3498db;
-    color: white;
-    border-color: #3498db;
-    box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3);
 }
 
 /* 📝 生词本区域 */
@@ -241,12 +234,12 @@ h1 {
     color: var(--text-color);
 }
 
-/* 🎯 段落编号特殊标签：优雅国风小书签（黛蓝色/竹青色结合体） */
+/* 🎯 段落编号：悬浮小书签样式 */
 .p-index {
     display: inline-block;
     font-size: 12px;
-    background: #eef3f0; /* 极淡的竹青底色 */
-    color: #2c3e50;      /* 黛蓝字 */
+    background: #eef3f0;
+    color: #2c3e50;
     padding: 3px 8px;
     border-radius: 6px;
     font-weight: 600;
@@ -261,18 +254,18 @@ h1 {
     border-color: #4a5568;
 }
 
-/* 🍊 拼音标注（Ruby）与智能隐藏 */
+/* 🍊 拼音标注（Ruby）极致互动：默认完全隐藏，滑过/激活时优雅浮现 */
 ruby {
     ruby-position: over;
     cursor: pointer;
     padding: 0 2px;
     border-radius: 4px;
-    transition: all 0.2s;
+    transition: all 0.2s ease;
 }
 
 ruby:hover, ruby.is-active {
-    background: #fff3cd;
-    color: #d35400;
+    background: #fff3cd; /* 悬停时字底变浅黄 */
+    color: #d35400;      /* 字变暖橙色 */
 }
 
 [data-theme="dark"] ruby:hover, [data-theme="dark"] ruby.is-active {
@@ -280,20 +273,24 @@ ruby:hover, ruby.is-active {
     color: #f39c12;
 }
 
-rt {
+/* 🙈 核心死命令：默认状态下，全篇所有拼音的透明度都是 0（隐形） */
+#content rt {
+    opacity: 0;
+    transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    user-select: none;
     font-size: 12px;
     color: var(--ruby-color);
     font-family: "PingFang SC", "Lucida Grande", sans-serif;
     padding-bottom: 5px;
-    user-select: none;
-    transition: opacity 0.2s;
 }
 
-/* 🙈 隐藏拼音切换逻辑 */
-.hide-pinyin rt { opacity: 0; }
-.hide-pinyin ruby:hover rt, .hide-pinyin ruby.is-active rt { opacity: 1; }
+/* 🌟 只有当鼠标指到（hover）或手机点击激活（.is-active）时，拼音才浮现 */
+#content ruby:hover rt, 
+#content ruby.is-active rt {
+    opacity: 1;
+}
 
-/* ✍️ 学生作答输入框：呼吸聚焦光晕升级 */
+/* ✍️ 学生作答输入框：紫色呼吸聚焦光晕 */
 textarea {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
     border: 1px solid var(--input-border) !important;
@@ -303,16 +300,16 @@ textarea {
 }
 
 textarea:focus {
-    border-color: var(--ai-color) !important; /* 聚焦时变为AI专属紫色 */
-    box-shadow: 0 0 0 4px rgba(155, 89, 182, 0.15) !important; /* 紫色呼吸保护光晕 */
+    border-color: var(--ai-color) !important;
+    box-shadow: 0 0 0 4px rgba(155, 89, 182, 0.15) !important;
     background: var(--card-bg) !important;
 }
 
-/* 🤖 AI 批改结果框：极致流光科技感卡片 */
-div[id^="aiBox"], .ai-result-box {
-    background: linear-gradient(to right, #f4f9fd, #f9f6fc) !important; /* 双色微渐变 */
+/* 🤖 AI 批改结果框：炫酷的蓝紫流光渐变左边框 */
+div[id^="aiBox"] {
+    background: linear-gradient(to right, #f4f9fd, #f9f6fc) !important;
     border-left: 5px solid transparent !important;
-    border-image: linear-gradient(to bottom, #3498db, #9b59b6) 1 !important; /* 炫酷的蓝紫流光渐变左边框 */
+    border-image: linear-gradient(to bottom, #3498db, #9b59b6) 1 !important;
     box-shadow: 0 4px 15px rgba(155, 89, 182, 0.05) !important;
     font-weight: 500;
 }
