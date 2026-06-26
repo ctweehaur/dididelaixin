@@ -1,5 +1,5 @@
 // ==========================================================================
-// ⚙️ 全互动式华文教学系统阅读器大脑 - script.js (2026 黄金三行极致精炼版)
+// ⚙️ 全互动式华文教学系统阅读器大脑 - script.js (2026 概述文本修复终极版)
 // ==========================================================================
 
 let currentIdx = -1; 
@@ -9,14 +9,13 @@ let currentQuizIdx = 0;
 let isLocked = false;
 
 window.onload = function() {
-    // 动态渲染页面大标题与网页标签标题
     document.getElementById('articleTitle').innerText = lessonTitle;
     document.title = lessonTitle;
 
     if (typeof lessonData !== 'undefined') { 
         render(); 
         renderNB(); 
-        renderQuestions(); // 启动全互动习题区
+        renderQuestions(); 
     }
     document.body.appendChild(document.getElementById('buddyPopover'));
     document.addEventListener('click', () => { 
@@ -25,7 +24,6 @@ window.onload = function() {
     });
 };
 
-// 📖 正文渲染器（含拼音、标点符号融合与末段出处右对齐识别）
 function render() {
     const cnt = document.getElementById('content'); 
     cnt.innerHTML = "";
@@ -72,7 +70,6 @@ function render() {
     finalizeParagraph(p);
 }
 
-// 🧠 核心习题区：由 DeepSeek 驱动的黄金三行极速批改引擎
 function renderQuestions() {
     if (typeof lessonQuestions === 'undefined' || lessonQuestions.length === 0) return;
 
@@ -101,6 +98,21 @@ function renderQuestions() {
         qText.innerHTML = `<strong>${q.number}</strong> ${q.question} <span style="color:#e74c3c; font-weight:bold;">[${q.score}分]</span>`;
         qText.style.fontSize = "16px";
         qBox.appendChild(qText);
+
+        // 🎯 补丁修复：如果题目带有 context 文本（如概述题），在前端为学生渲染出背景阅读区
+        if (q.context) {
+            const contextBox = document.createElement("div");
+            contextBox.innerHTML = q.context.replace(/\n/g, '<br>');
+            contextBox.style.background = "#f8f9fa";
+            contextBox.style.borderLeft = "4px solid #9b59b6";
+            contextBox.style.padding = "15px";
+            contextBox.style.margin = "12px 0";
+            contextBox.style.fontSize = "15px";
+            contextBox.style.color = "#34495e";
+            contextBox.style.lineHeight = "1.6";
+            contextBox.style.borderRadius = "4px";
+            qBox.appendChild(contextBox);
+        }
 
         const textarea = document.createElement("textarea");
         textarea.placeholder = (q.type && q.type === "summary") ? "请在此处输入您的概述答案（注意不超过60字）..." : "请在此处输入您的答案...";
@@ -165,7 +177,7 @@ function renderQuestions() {
         ansBox.style.padding = "12px";
         ansBox.style.background = "#fff9db";
         ansBox.style.borderLeft = "4px solid #f1c40f";
-        ansBox.style.borderRadius = "4px";
+        ansBox.borderRadius = "4px";
         ansBox.style.fontSize = "14px";
         ansBox.innerHTML = `<strong>💡 官方参考满分范文：</strong><br><div style="margin-top:6px; color:#2c3e50; font-weight:500;">${q.modelAnswer}</div>`;
         qBox.appendChild(ansBox);
@@ -185,7 +197,6 @@ function renderQuestions() {
             submitBtn.innerText = ansBox.style.display === "block" ? "收起标准答案 ❌" : "查看标准答案 📋";
         };
 
-        // 🚀 终极极简智审内核（黄金三行输出）
         aiBtn.onclick = async function() {
             const studentAns = textarea.value.trim();
             if (!studentAns) { alert("请先输入您的作答哦！"); return; }
@@ -239,7 +250,6 @@ function renderQuestions() {
                 if (data && data.choices && data.choices[0].message.content) {
                     let aiReply = data.choices[0].message.content;
                     
-                    // 将大模型返回的标签和核心词进行加粗处理，让排版更好看
                     let formattedReply = aiReply
                         .replace(/【最终得分】：/g, '<strong>【最终得分】：</strong>')
                         .replace(/【答对】：/g, '<strong>【答对】：</strong>')
@@ -258,7 +268,6 @@ function renderQuestions() {
             }
         };
 
-        // 高精度华文计字
         function updateCharCount() {
             if (q.type && q.type === "summary") {
                 const text = textarea.value;
