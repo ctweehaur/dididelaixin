@@ -3,54 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>弟弟的来信</title>
+    <title>华文智能互动学习阅读器</title>
     <link rel="stylesheet" href="style.css">
-    
-    <script src="data.js" defer></script>
-    <script src="questions.js" defer></script>
-    <script src="script.js" defer></script>
 </head>
 <body>
 
-<div class="control-panel">
-    <button id="pyToggle" onclick="togglePinyin()">拼音 开</button>
-    <button id="gameToggleBtn" onclick="toggleGameMode()" style="background: #8e44ad; color: white; border:none;">🎯 生词测试</button>
-    <button onclick="toggleTheme()">🌙 模式</button>
-</div>
-
-<div class="vocab-notebook">
-    <div class="notebook-title">
-        <span>📝 我的临时生词本</span>
-        <button onclick="forceClearNotebook()" class="clear-btn">清空</button>
+    <div class="control-panel">
+        <button id="themeToggleBtn" onclick="toggleTheme()">🌓 切换主题</button>
+        <button id="gameToggleBtn" onclick="toggleGameMode()">🎯 生词测试</button>
     </div>
-    <div id="notebookList" class="notebook-list"><span style="color:#999; font-size:13px;">点击词语 Copy 记录生词</span></div>
-</div>
 
-<div class="game-container" id="gameContainer" style="display: none;">
-    <div class="notebook-title">
-        <span>🧩 生词测试题</span>
-        <button onclick="startQuizGame()" style="cursor:pointer; background:#34495e; color:white; border:none; padding:4px 10px; border-radius:10px;">🔄 重测</button>
+    <div class="vocab-notebook">
+        <div class="notebook-title">
+            <span>📖 我的生词本</span>
+            <button class="clear-btn" onclick="forceClearNotebook()">清空本子 🗑️</button>
+        </div>
+        <div id="notebookList" class="notebook-list">
+            </div>
     </div>
-    <div class="quiz-card">
-        <div id="quizProgress" style="font-size:12px; color:#888; margin-bottom:10px;"></div>
-        <div class="quiz-question" id="quizQuestion"></div>
-        <div class="quiz-pinyin" id="quizPinyin"></div>
-        <div class="quiz-options" id="quizOptions"></div>
+
+    <div id="gameContainer" class="game-container" style="display: none;">
+        <div class="quiz-card">
+            <div id="quizProgress" style="font-size: 14px; color: #7f8c8d; margin-bottom: 5px;"></div>
+            <div id="quizQuestion" class="quiz-question"></div>
+            <div id="quizPinyin" class="quiz-pinyin"></div>
+            <div id="quizOptions" class="quiz-options"></div>
+        </div>
     </div>
-</div>
 
-<div class="article-card">
-    <h1 id="articleTitle"></h1>
-    <div id="content"></div>
-</div>
+    <div class="article-card">
+        <h1 id="articleTitle">课文加载中...</h1>
+        <div id="content">
+            </div>
+    </div>
 
-<div class="buddy-popover" id="buddyPopover" onclick="event.stopPropagation()">
-    <div class="pop-title-row"><span id="popWord" class="pop-title"></span><span id="popPinyin" class="pop-pinyin"></span></div>
-    <div class="pop-box pop-en"><span class="pop-tag">EN</span><span id="popEn"></span></div>
-    <div class="pop-box pop-bm"><span class="pop-tag">MY</span><span id="popBm"></span></div>
-    <div class="pop-footer"><button class="pop-btn-copy" onclick="saveToNotebook(event)">Copy 📋</button></div>
-    <div class="pop-arrow" id="popArrow"></div>
-</div>
+    <div id="buddyPopover" class="buddy-popover">
+        <div class="pop-title-row">
+            <span id="popWord" class="pop-title">词</span>
+            <span id="popPinyin" class="pop-pinyin">[pīn yīn]</span>
+        </div>
+        <div class="pop-box pop-en">
+            <span class="pop-tag">EN</span>
+            <span id="popEn">English translation</span>
+        </div>
+        <div class="pop-box pop-bm">
+            <span class="pop-tag">BM</span>
+            <span id="popBm">Terjemahan Melayu</span>
+        </div>
+        <div class="pop-footer">
+            <button class="pop-btn-copy" onclick="saveToNotebook(event)">Copy 📋</button>
+        </div>
+        <div id="popArrow" class="pop-arrow"></div>
+    </div>
 
+    <script src="data.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
