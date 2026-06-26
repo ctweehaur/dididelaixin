@@ -1,5 +1,5 @@
 // ==========================================================================
-// ⚙️ 全互动式华文教学系统阅读器大脑 - script.js (2026 首行完美缩进空两格版)
+// ⚙️ 全互动式华文教学系统阅读器大脑 - script.js (2026 纯悬浮生词互动终极版)
 // ==========================================================================
 
 let currentIdx = -1; 
@@ -9,14 +9,18 @@ let currentQuizIdx = 0;
 let isLocked = false;
 
 window.onload = function() {
+    // 初始化网页标题
     document.getElementById('articleTitle').innerText = lessonTitle;
     document.title = lessonTitle;
 
+    // 渲染课文、生词本和习题
     if (typeof lessonData !== 'undefined') { 
         render(); 
         renderNB(); 
         renderQuestions(); 
     }
+    
+    // 初始化气泡弹窗事件，点击空白处自动收回激活状态
     document.body.appendChild(document.getElementById('buddyPopover'));
     document.addEventListener('click', () => { 
         document.getElementById('buddyPopover').style.display = 'none'; 
@@ -24,13 +28,13 @@ window.onload = function() {
     });
 };
 
+// 📖 正文渲染器：完美支持华文首行空两格，且将灰色段号悬浮在左侧白边
 function render() {
     const cnt = document.getElementById('content'); 
     cnt.innerHTML = "";
     let pNum = 1; 
     let p = document.createElement("p"); 
     
-    // 🎯 核心修复：平衡悬浮耳朵与华文传统的“首行空两格”缩进
     function finalizeParagraph(paragraphElement) {
         if (paragraphElement.childNodes.length === 0) return;
         const textContent = paragraphElement.innerText.trim();
@@ -43,20 +47,20 @@ function render() {
             paragraphElement.style.fontSize = "15px";     
             paragraphElement.style.marginTop = "30px";    
         } else {
-            // 恢复华文课文最灵魂的【首行空两格（2em）】
+            // 恢复最纯正的华文首行缩进空两格
             paragraphElement.style.position = "relative";
             paragraphElement.style.textIndent = "2em"; 
-            paragraphElement.style.paddingLeft = "0"; // 清除刚才的 padding
+            paragraphElement.style.paddingLeft = "0"; 
             
             let s = document.createElement("span");
             s.className = "p-index";
             s.innerText = "第" + pNum + "段";
             
-            // 样式再次微调：利用负边距，把灰色标签硬生生往左边空白处推 55 像素，绝不占位和干扰正文
+            // 负边距反向外推，让段落编号挂在文章外面，绝不顶歪正文第一行的拼音
             s.style.position = "absolute";
             s.style.left = "-55px"; 
             s.style.top = "4px"; 
-            s.style.textIndent = "0"; // 确保标签内的文字不跟着缩进
+            s.style.textIndent = "0"; 
             
             paragraphElement.insertBefore(s, paragraphElement.firstChild); 
             pNum++; 
@@ -74,7 +78,7 @@ function render() {
                 e.stopPropagation(); 
                 document.querySelectorAll('ruby').forEach(x=>x.classList.remove('is-active')); 
                 r.classList.add('is-active'); 
-                openPop(e.currentTarget, i); 
+                openPop(e.currentTarget, i); // 单击生词弹窗，同时触发 CSS 显现单个拼音
             };
             r.innerHTML = `${d[0]}<rt>${d[1]}</rt>`; 
             p.appendChild(r);
@@ -83,6 +87,7 @@ function render() {
     finalizeParagraph(p);
 }
 
+// 🧠 核心习题区：支持概述背景卡片，并对接 DeepSeek 黄金三行阅卷引擎
 function renderQuestions() {
     if (typeof lessonQuestions === 'undefined' || lessonQuestions.length === 0) return;
 
@@ -112,6 +117,7 @@ function renderQuestions() {
         qText.style.fontSize = "16px";
         qBox.appendChild(qText);
 
+        // 如果题目配有 context 背景文本（如概述题），在前端生成高质感的紫色引用卡片
         if (q.context) {
             const contextBox = document.createElement("div");
             contextBox.innerHTML = q.context.replace(/\n/g, '<br>');
@@ -209,6 +215,7 @@ function renderQuestions() {
             submitBtn.innerText = ansBox.style.display === "block" ? "收起满分答案 ❌" : "查看满分答案 📋";
         };
 
+        // 🚀 DeepSeek 黄金三行超强智审引擎
         aiBtn.onclick = async function() {
             const studentAns = textarea.value.trim();
             if (!studentAns) { alert("请先输入您的作答哦！"); return; }
@@ -229,9 +236,9 @@ function renderQuestions() {
 【满分答案】：${q.modelAnswer}
 【学生作答】：“${studentAns}”
 
-⚠️ 【输出格式模板】：
+⚠️ 【输出格式模板（严禁自行添加任何多余的汉字、前言或总结语）】：
 【最终得分】：X / ${q.score} 分
-推算：[请列出写对的要点]
+【答对】：[请列出写对的要点]
 【错漏】：[请列出漏掉或写错的要点]
 
 * 提示：语意对即可，允许近义词。若字数格式不符，在此处直接说明。`;
@@ -304,24 +311,113 @@ function renderQuestions() {
     cnt.appendChild(qCard);
 }
 
-// ==================== 🛠️ 以下维持原有的字典与生词本/小游戏测试逻辑 ============================
+// ==================== 🛠️ 独立字词高精准字典解释弹窗核心逻辑 ============================
 function openPop(el, i) {
     currentIdx = i; const d = lessonData[i];
     document.getElementById('popWord').innerText = d[0];
     document.getElementById('popPinyin').innerText = `[${d[1]}]`;
-    document.getElementById('popEn').innerText = d[2]; document.getElementById('popBm').innerText = d[3];
-    const pop = document.getElementById('buddyPopover'); const arrow = document.getElementById('popArrow');
-    pop.style.display = 'block'; const rect = el.getBoundingClientRect(); const popRect = pop.getBoundingClientRect();
-    let top = rect.top - popRect.height - 15; let left = rect.left + (rect.width / 2) - (popRect.width / 2);
+    document.getElementById('popEn').innerText = d[2]; 
+    document.getElementById('popBm').innerText = d[3];
+    
+    const pop = document.getElementById('buddyPopover'); 
+    const arrow = document.getElementById('popArrow');
+    pop.style.display = 'block'; 
+    
+    const rect = el.getBoundingClientRect(); 
+    const popRect = pop.getBoundingClientRect();
+    
+    let top = rect.top - popRect.height - 15; 
+    let left = rect.left + (rect.width / 2) - (popRect.width / 2);
+    
     if (left + popRect.width > window.innerWidth - 15) left = window.innerWidth - popRect.width - 15;
     if (left < 15) left = 15;
-    arrow.style.left = `${(rect.left + rect.width / 2) - left}px`; pop.style.top = `${top}px`; pop.style.left = `${left}px`;
+    
+    arrow.style.left = `${(rect.left + rect.width / 2) - left}px`; 
+    pop.style.top = `${top}px`; 
+    pop.style.left = `${left}px`;
 }
-function saveToNotebook(e) { e.stopPropagation(); if (!saved.includes(currentIdx)) { saved.push(currentIdx); localStorage.setItem('saved_104', JSON.stringify(saved)); renderNB(); } const btn = e.target; btn.innerText = "✓ 已存"; setTimeout(() => btn.innerText = "Copy 📋", 1000); }
-function renderNB() { const list = document.getElementById('notebookList'); if (saved.length === 0) { list.innerHTML = "<span style='color:#999; font-size:13px;'>点击词语 Copy 记录生词</span>"; } else { list.innerHTML = ""; saved.forEach(idx => { const item = lessonData[idx]; if(!item) return; const div = document.createElement("div"); div.className = "notebook-item"; div.innerText = item[0]; div.onclick = (e) => { e.stopPropagation(); const target = document.querySelector(`ruby[data-word-index="${idx}"]`); if(target) { target.scrollIntoView({behavior: "smooth", block: "center"}); document.querySelectorAll('ruby').forEach(r => r.classList.remove('is-active')); setTimeout(() => { target.classList.add('is-active'); openPop(target, idx); }, 500); } }; list.appendChild(div); }); } }
+
+function saveToNotebook(e) { 
+    e.stopPropagation(); 
+    if (!saved.includes(currentIdx)) { 
+        saved.push(currentIdx); 
+        localStorage.setItem('saved_104', JSON.stringify(saved)); 
+        renderNB(); 
+    } 
+    const btn = e.target; 
+    btn.innerText = "✓ 已存"; 
+    setTimeout(() => btn.innerText = "Copy 📋", 1000); 
+}
+
+function renderNB() { 
+    const list = document.getElementById('notebookList'); 
+    if (saved.length === 0) { 
+        list.innerHTML = "<span style='color:#999; font-size:13px;'>点击词语 Copy 记录生词</span>"; 
+    } else { 
+        list.innerHTML = ""; 
+        saved.forEach(idx => { 
+            const item = lessonData[idx]; 
+            if(!item) return; 
+            const div = document.createElement("div"); 
+            div.className = "notebook-item"; 
+            div.innerText = item[0]; 
+            div.onclick = (e) => { 
+                e.stopPropagation(); 
+                const target = document.querySelector(`ruby[data-word-index="${idx}"]`); 
+                if(target) { 
+                    target.scrollIntoView({behavior: "smooth", block: "center"}); 
+                    document.querySelectorAll('ruby').forEach(r => r.classList.remove('is-active')); 
+                    setTimeout(() => { 
+                        target.classList.add('is-active'); 
+                        openPop(target, idx); 
+                    }, 500); 
+                } 
+            }; 
+            list.appendChild(div); 
+        }); 
+    } 
+}
+
 function forceClearNotebook() { localStorage.removeItem('saved_104'); saved = []; renderNB(); document.getElementById('gameContainer').style.display = 'none'; document.getElementById('gameToggleBtn').innerText = "🎯 生词测试"; }
 function toggleGameMode() { const container = document.getElementById('gameContainer'); const btn = document.getElementById('gameToggleBtn'); if (container.style.display === 'block') { container.style.display = 'none'; btn.innerText = "🎯 生词测试"; } else { if (saved.length < 1) { alert("生词本是空的哦！"); return; } container.style.display = 'block'; btn.innerText = "📖 返回课文"; startQuizGame(); container.scrollIntoView({behavior: "smooth"}); } }
 function startQuizGame() { quizData = [...saved].sort(() => Math.random() - 0.5); currentQuizIdx = 0; loadQuestion(); }
-function loadQuestion() { isLocked = false; const targetIdx = quizData[currentQuizIdx]; const data = lessonData[targetIdx]; document.getElementById('quizProgress').innerText = `第 ${currentQuizIdx + 1} / ${quizData.length} 题`; document.getElementById('quizQuestion').innerText = data[0]; document.getElementById('quizPinyin').innerText = `[${data[1]}]`; const correctStr = (data[2].trim() + "；" + data[3].trim()); let options = [correctStr]; let others = lessonData.filter(d => d[1] !== "" && d[0] !== data[0]).map(d => (d[2].trim() + "；" + d[3].trim())); others = [...new Set(others)].filter(s => s !== correctStr).sort(() => Math.random() - 0.5); for(let i=0; i<3; i++) { if(others[i]) options.push(others[i]); } options.sort(() => Math.random() - 0.5); const optDiv = document.getElementById('quizOptions'); optDiv.innerHTML = ""; options.forEach(opt => { const b = document.createElement('button'); b.className = 'quiz-opt-btn'; b.innerText = opt; b.onclick = () => { if(isLocked || b.classList.contains('wrong')) return; if(opt.trim() === correctStr.trim()) { isLocked = true; b.classList.add('correct'); setTimeout(() => { currentQuizIdx++; if(currentQuizIdx < quizData.length) loadQuestion(); else { alert("🎉 完成测试！你真棒！"); toggleGameMode(); } }, 800); } else { b.classList.add('wrong'); } }; optDiv.appendChild(b); }); }
-function togglePinyin() { document.getElementById('content').classList.toggle('hide-pinyin'); document.getElementById('pyToggle').classList.toggle('active'); }
+
+function loadQuestion() { 
+    isLocked = false; 
+    const targetIdx = quizData[currentQuizIdx]; 
+    const data = lessonData[targetIdx]; 
+    document.getElementById('quizProgress').innerText = `第 ${currentQuizIdx + 1} / ${quizData.length} 题`; 
+    document.getElementById('quizQuestion').innerText = data[0]; 
+    document.getElementById('quizPinyin').innerText = `[${data[1]}]`; 
+    
+    const correctStr = (data[2].trim() + "；" + data[3].trim()); 
+    let options = [correctStr]; 
+    let others = lessonData.filter(d => d[1] !== "" && d[0] !== data[0]).map(d => (d[2].trim() + "；" + d[3].trim())); 
+    others = [...new Set(others)].filter(s => s !== correctStr).sort(() => Math.random() - 0.5); 
+    
+    for(let i=0; i<3; i++) { if(others[i]) options.push(others[i]); } 
+    options.sort(() => Math.random() - 0.5); 
+    
+    const optDiv = document.getElementById('quizOptions'); 
+    optDiv.innerHTML = ""; 
+    options.forEach(opt => { 
+        const b = document.createElement('button'); 
+        b.className = 'quiz-opt-btn'; 
+        b.innerText = opt; 
+        b.onclick = () => { 
+            if(isLocked || b.classList.contains('wrong')) return; 
+            if(opt.trim() === correctStr.trim()) { 
+                isLocked = true; 
+                b.classList.add('correct'); 
+                setTimeout(() => { 
+                    currentQuizIdx++; 
+                    if(currentQuizIdx < quizData.length) loadQuestion(); 
+                    else { alert("🎉 完成测试！你真棒！"); toggleGameMode(); } 
+                }, 800); 
+            } else { b.classList.add('wrong'); } 
+        }; 
+        optDiv.appendChild(b); 
+    }); 
+}
+
 function toggleTheme() { document.documentElement.setAttribute('data-theme', document.documentElement.getAttribute('data-theme')==='dark'?'':'dark'); }
