@@ -1,5 +1,5 @@
 // ==========================================================================
-// ⚙️ 全互动式华文教学系统阅读器大脑 - script.js (2026 悬浮段落标签完美对齐版)
+// ⚙️ 全互动式华文教学系统阅读器大脑 - script.js (2026 首行完美缩进空两格版)
 // ==========================================================================
 
 let currentIdx = -1; 
@@ -30,7 +30,7 @@ function render() {
     let pNum = 1; 
     let p = document.createElement("p"); 
     
-    // 🎯 核心修复：将段落赋予相对定位，让段号变成左侧独立悬浮的小耳朵，绝不挤压第一行拼音
+    // 🎯 核心修复：平衡悬浮耳朵与华文传统的“首行空两格”缩进
     function finalizeParagraph(paragraphElement) {
         if (paragraphElement.childNodes.length === 0) return;
         const textContent = paragraphElement.innerText.trim();
@@ -43,20 +43,20 @@ function render() {
             paragraphElement.style.fontSize = "15px";     
             paragraphElement.style.marginTop = "30px";    
         } else {
-            // 给段落本身增加相对定位和左边距，为悬浮标签留出空间
+            // 恢复华文课文最灵魂的【首行空两格（2em）】
             paragraphElement.style.position = "relative";
-            paragraphElement.style.paddingLeft = "55px";
-            paragraphElement.style.textIndent = "0"; // 清除传统缩进，统一由Padding和悬浮对齐
+            paragraphElement.style.textIndent = "2em"; 
+            paragraphElement.style.paddingLeft = "0"; // 清除刚才的 padding
             
             let s = document.createElement("span");
             s.className = "p-index";
             s.innerText = "第" + pNum + "段";
             
-            // 样式升级：绝对定位悬浮，完全不占用文档流空间
+            // 样式再次微调：利用负边距，把灰色标签硬生生往左边空白处推 55 像素，绝不占位和干扰正文
             s.style.position = "absolute";
-            s.style.left = "0";
-            s.style.top = "4px"; // 垂直微调，完美对齐汉字中心线
-            s.style.textIndent = "0";
+            s.style.left = "-55px"; 
+            s.style.top = "4px"; 
+            s.style.textIndent = "0"; // 确保标签内的文字不跟着缩进
             
             paragraphElement.insertBefore(s, paragraphElement.firstChild); 
             pNum++; 
@@ -231,7 +231,7 @@ function renderQuestions() {
 
 ⚠️ 【输出格式模板】：
 【最终得分】：X / ${q.score} 分
-【答对】：[请列出写对的要点]
+推算：[请列出写对的要点]
 【错漏】：[请列出漏掉或写错的要点]
 
 * 提示：语意对即可，允许近义词。若字数格式不符，在此处直接说明。`;
