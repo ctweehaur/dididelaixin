@@ -1,5 +1,5 @@
 // ==========================================================================
-// ⚙️ 全互动式华文教学系统阅读器大脑 - script.js (2026 概述文本修复终极版)
+// ⚙️ 全互动式华文教学系统阅读器大脑 - script.js (2026 最终修正版)
 // ==========================================================================
 
 let currentIdx = -1; 
@@ -99,7 +99,6 @@ function renderQuestions() {
         qText.style.fontSize = "16px";
         qBox.appendChild(qText);
 
-        // 🎯 补丁修复：如果题目带有 context 文本（如概述题），在前端为学生渲染出背景阅读区
         if (q.context) {
             const contextBox = document.createElement("div");
             contextBox.innerHTML = q.context.replace(/\n/g, '<br>');
@@ -158,7 +157,7 @@ function renderQuestions() {
         btnGroup.appendChild(aiBtn);
 
         const submitBtn = document.createElement("button");
-        submitBtn.innerText = "查看标准答案 📋";
+        submitBtn.innerText = "查看满分答案 📋";
         submitBtn.style.padding = "6px 12px";
         submitBtn.style.background = "#2ecc71";
         submitBtn.style.color = "white";
@@ -177,9 +176,9 @@ function renderQuestions() {
         ansBox.style.padding = "12px";
         ansBox.style.background = "#fff9db";
         ansBox.style.borderLeft = "4px solid #f1c40f";
-        ansBox.borderRadius = "4px";
+        ansBox.style.borderRadius = "4px";
         ansBox.style.fontSize = "14px";
-        ansBox.innerHTML = `<strong>💡 官方参考满分范文：</strong><br><div style="margin-top:6px; color:#2c3e50; font-weight:500;">${q.modelAnswer}</div>`;
+        ansBox.innerHTML = `<strong>💡 满分答案：</strong><br><div style="margin-top:6px; color:#2c3e50; font-weight:500;">${q.modelAnswer}</div>`;
         qBox.appendChild(ansBox);
 
         const aiBox = document.createElement("div");
@@ -194,7 +193,7 @@ function renderQuestions() {
 
         submitBtn.onclick = function() {
             ansBox.style.display = ansBox.style.display === "none" ? "block" : "none";
-            submitBtn.innerText = ansBox.style.display === "block" ? "收起标准答案 ❌" : "查看标准答案 📋";
+            submitBtn.innerText = ansBox.style.display === "block" ? "收起满分答案 ❌" : "查看满分答案 📋";
         };
 
         aiBtn.onclick = async function() {
@@ -214,15 +213,15 @@ function renderQuestions() {
 
             const promptText = `请严格根据标准批改学生的华文作答。
 【题目】：${q.number} ${q.question} [满分 ${q.score} 分]
-【标准答案】：${q.modelAnswer}
+【满分答案】：${q.modelAnswer}
 【学生作答】：“${studentAns}”
 
-⚠️ 【严格输出模板（严禁自行添加任何多余的字、段落、标点或换行）】：
+⚠️ 【输出格式模板】：
 【最终得分】：X / ${q.score} 分
-【答对】：[请用一句话直接列出学生答对的要点，如无则写无]
-【错漏】：[请用一句话直接列出学生漏掉或写错的要点，如无则写无]
+【答对】：[请列出写对的要点]
+【错漏】：[请列出漏掉或写错的要点]
 
-* 提示：语意对即可通融，允许近义词。若字数或格式不符要求（如概述题），在错漏中直接写明原因。`;
+* 提示：语意对即可，允许近义词。若字数格式不符，在此处直接说明。`;
 
             try {
                 const response = await fetch("https://api.deepseek.com/v1/chat/completions", {
@@ -234,7 +233,7 @@ function renderQuestions() {
                     body: JSON.stringify({
                         model: "deepseek-chat",
                         messages: [
-                            { role: "system", content: "你是一位精炼、古板、说话绝不吐露一个废字的多维华文阅卷考官。你只允许严格按照提供给你的三行格式模板输出，绝对禁止自行添加任何多余的中文词汇、前言或总结语。" },
+                            { role: "system", content: "你是一位精炼、古板、绝不吐露废字的阅卷考官。你只允许严格按照提供给你的三行格式模板输出，绝对禁止自行添加任何多余的汉字、前言或总结语。" },
                             { role: "user", content: promptText }
                         ],
                         stream: false
@@ -249,7 +248,6 @@ function renderQuestions() {
                 const data = await response.json();
                 if (data && data.choices && data.choices[0].message.content) {
                     let aiReply = data.choices[0].message.content;
-                    
                     let formattedReply = aiReply
                         .replace(/【最终得分】：/g, '<strong>【最终得分】：</strong>')
                         .replace(/【答对】：/g, '<strong>【答对】：</strong>')
@@ -261,7 +259,7 @@ function renderQuestions() {
                     throw new Error("数据异常。");
                 }
             } catch (err) {
-                aiBox.innerHTML = `<span style='color:#e74c3c;'>❌ 批改失败，请重新点击重试。</span>`;
+                aiBox.innerHTML = `<span style='color:#e74c3c;'>❌ 批改失败，请重试。</span>`;
                 console.error(err);
             } finally {
                 aiBtn.disabled = false;
