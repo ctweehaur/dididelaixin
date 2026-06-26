@@ -1,5 +1,5 @@
 // ==========================================================================
-// ⚙️ 全互动式华文教学系统阅读器大脑 - script.js (2026 DeepSeek 极速无缝批改版)
+// ⚙️ 全互动式华文教学系统阅读器大脑 - script.js (2026 DeepSeek 精炼图表卡片版)
 // ==========================================================================
 
 let currentIdx = -1; 
@@ -80,7 +80,7 @@ function render() {
     finalizeParagraph(p);
 }
 
-// 🧠 核心习题区：全面升级为 DeepSeek 高效批改引擎
+// 🧠 核心习题区：具备智能图表限制的 DeepSeek 批改引擎
 function renderQuestions() {
     if (typeof lessonQuestions === 'undefined' || lessonQuestions.length === 0) return;
 
@@ -193,12 +193,11 @@ function renderQuestions() {
             submitBtn.innerText = ansBox.style.display === "block" ? "收起标准答案 ❌" : "查看标准答案 📋";
         };
 
-        // 🚀 核心更新：完全重构为 DeepSeek 官方标准的 Fetch 通信协议
+        // 🚀 DeepSeek 强约束请求引擎：精简、图表、少说废话
         aiBtn.onclick = async function() {
             const studentAns = textarea.value.trim();
             if (!studentAns) { alert("请先输入您的作答哦！"); return; }
 
-            // 变量名虽然保留了 gemini 以兼容本地存储，但实际输入 DeepSeek Key 即可
             let apiKey = localStorage.getItem("gemini_api_key");
             if (!apiKey) {
                 apiKey = prompt("🤖 首次使用请输入您的 DeepSeek API Key:\n（密钥将安全保存在您的本地浏览器中）");
@@ -207,11 +206,23 @@ function renderQuestions() {
             }
 
             aiBox.style.display = "block";
-            aiBox.innerHTML = "<span style='color:#34495e;'>⏳ AI 老师正在运用 DeepSeek 深度审阅作答，请稍候...</span>";
+            aiBox.innerHTML = "<span style='color:#34495e;'>⏳ AI 老师正在精细审阅作答，请稍候...</span>";
             aiBtn.disabled = true;
 
+            const promptText = `请严格根据以下标准批改学生的华文作答。
+【题目】：${q.number} ${q.question} [满分 ${q.score} 分]
+【官方评分细则】：${q.modelAnswer}
+【学生实际作答】：“${studentAns}”
+
+⚠️ 【严格输出格式规范】：
+1. 必须使用 Markdown 表格列出得分项，格式如下：
+| 采分点维度 | 状态 | 得分 |
+| :--- | :---: | :---: |
+| 维度名称1 | 满分/漏掉/擦边 | +X分 |
+
+2. 【总评语与建议】：严禁超过 3 句话！必须用通俗大白话（适合学生阅读），多鼓励，并点出怎么拿满分。`;
+
             try {
-                // 🎯 换用 DeepSeek 官方全球标准的通用接口与目前最擅长逻辑批改的 deepseek-chat 模型
                 const response = await fetch("https://api.deepseek.com/v1/chat/completions", {
                     method: "POST",
                     headers: {
@@ -221,8 +232,8 @@ function renderQuestions() {
                     body: JSON.stringify({
                         model: "deepseek-chat",
                         messages: [
-                            { role: "system", content: "你是一位严谨的华文老师。请根据题目、参考评分标准与学生作答，给出极其地道的得分和评语建议。" },
-                            { role: "user", content: `题目：${q.question} [满分 ${q.score} 分]\n参考评分标准：${q.modelAnswer}\n学生作答："${studentAns}"\n请直接输出得分、采分点拆解以及改进建议。` }
+                            { role: "system", content: "你是一位精炼、说话直奔主题的学校华文老师。你善于用Markdown表格和极其简短的句子（大白话）让学生一眼看懂分数来源。" },
+                            { role: "user", content: promptText }
                         ],
                         stream: false
                     })
@@ -230,24 +241,56 @@ function renderQuestions() {
 
                 if (!response.ok) {
                     const errData = await response.json();
-                    throw new Error(errData.error ? errData.error.message : "连接被 DeepSeek 网关拒绝");
+                    throw new Error(errData.error ? errData.error.message : "连接被网关拒绝");
                 }
 
                 const data = await response.json();
                 if (data && data.choices && data.choices[0].message.content) {
                     let aiReply = data.choices[0].message.content;
+                    
+                    // 🌟 核心：高兼容度 Markdown 表格渲染引擎（防错位）
                     let formattedReply = aiReply
                         .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
                         .replace(/\*(.*?)\*/g, '<em>$1</em>');
 
-                    aiBox.innerHTML = `<strong>🤖 DeepSeek 老师精细批改报告：</strong><br><div style="margin-top:8px; white-space: pre-line; line-height:1.6; color:#2c3e50;">${formattedReply}</div>`;
+                    // 如果含有 Markdown 表格，将其转换成美观的 HTML 网页原生态表格
+                    if (formattedReply.includes("|")) {
+                        let lines = formattedReply.split("\n");
+                        let inTable = false;
+                        let htmlTable = `<table style="width:100%; border-collapse:collapse; margin:10px 0; background:white; font-size:14px; box-shadow:0 2px 5px rgba(0,0,0,0.05);">`;
+                        
+                        for (let j = 0; j < lines.length; j++) {
+                            let line = lines[j].trim();
+                            if (line.startsWith("|") && line.endsWith("|")) {
+                                if (line.includes("---") || line.includes(":---")) continue; // 跳过分割线
+                                if (!inTable) { inTable = true; }
+                                
+                                let cells = line.split("|").map(c => c.trim()).filter((c, idx, arr) => idx > 0 && idx < arr.length - 1);
+                                htmlTable += `<tr style="border-bottom:1px solid #eee;">`;
+                                cells.forEach(cell => {
+                                    htmlTable += `<td style="padding:10px; border:1px solid #eef2f5;">${cell}</td>`;
+                                });
+                                htmlTable += `</tr>`;
+                            } else {
+                                if (inTable) {
+                                    inTable = false;
+                                    htmlTable += `</table>`;
+                                    lines[j] = htmlTable + `<br>` + lines[j];
+                                }
+                            }
+                        }
+                        if (inTable) { htmlTable += `</table>`; formattedReply = htmlTable; }
+                        else { formattedReply = lines.join("\n"); }
+                    }
+
+                    aiBox.innerHTML = `<strong>🤖 AI 老师线上精炼批改：</strong><br><div style="margin-top:8px; white-space: pre-line; line-height:1.6; color:#2c3e50;">${formattedReply}</div>`;
                 } else {
-                    throw new Error("返回的数据结构异常，请检查接口状态。");
+                    throw new Error("返回数据结构异常。");
                 }
             } catch (err) {
                 aiBox.innerHTML = `<span style='color:#e74c3c;'>❌ 批改失败！<br>
                 <strong>技术报错原因：</strong>${err.message || err}<br>
-                <small>解决办法：请使用 Clear Data 清除旧缓存，并检查新 Key 是否激活。</small></span>`;
+                <small>解决办法：请重新点击重试。</small></span>`;
                 console.error(err);
             } finally {
                 aiBtn.disabled = false;
