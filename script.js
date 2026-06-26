@@ -1,5 +1,5 @@
 // ==========================================================================
-// ⚙️ 全互动式华文教学系统阅读器大脑 - script.js (2026 最终修正版)
+// ⚙️ 全互动式华文教学系统阅读器大脑 - script.js (2026 悬浮段落标签完美对齐版)
 // ==========================================================================
 
 let currentIdx = -1; 
@@ -30,6 +30,7 @@ function render() {
     let pNum = 1; 
     let p = document.createElement("p"); 
     
+    // 🎯 核心修复：将段落赋予相对定位，让段号变成左侧独立悬浮的小耳朵，绝不挤压第一行拼音
     function finalizeParagraph(paragraphElement) {
         if (paragraphElement.childNodes.length === 0) return;
         const textContent = paragraphElement.innerText.trim();
@@ -42,9 +43,21 @@ function render() {
             paragraphElement.style.fontSize = "15px";     
             paragraphElement.style.marginTop = "30px";    
         } else {
+            // 给段落本身增加相对定位和左边距，为悬浮标签留出空间
+            paragraphElement.style.position = "relative";
+            paragraphElement.style.paddingLeft = "55px";
+            paragraphElement.style.textIndent = "0"; // 清除传统缩进，统一由Padding和悬浮对齐
+            
             let s = document.createElement("span");
             s.className = "p-index";
             s.innerText = "第" + pNum + "段";
+            
+            // 样式升级：绝对定位悬浮，完全不占用文档流空间
+            s.style.position = "absolute";
+            s.style.left = "0";
+            s.style.top = "4px"; // 垂直微调，完美对齐汉字中心线
+            s.style.textIndent = "0";
+            
             paragraphElement.insertBefore(s, paragraphElement.firstChild); 
             pNum++; 
         }
