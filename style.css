@@ -1,68 +1,77 @@
 /* ==========================================================================
-   🎨 现代华文学习平台全局样式 - style.css
+   🎨 现代华文学习平台全局样式 - style.css (2026 极致美化版)
    ========================================================================== */
 
 :root {
-    --bg-color: #f7f9fa;
+    --bg-color: linear-gradient(135deg, #f4f7f6 0%, #eaefed 100%); /* 莫兰迪雅致淡绿灰渐变，护眼高级 */
     --text-color: #2c3e50;
     --card-bg: #ffffff;
     --primary-color: #34495e;
     --accent-color: #2ecc71;
     --ai-color: #9b59b6;
     --ruby-color: #e67e22;
+    --input-border: #cbd5e1;
+    --shadow-sm: 0 2px 8px rgba(0,0,0,0.04);
+    --shadow-md: 0 10px 25px rgba(44, 62, 80, 0.05);
 }
 
 /* 🌙 暗黑模式适配 */
 [data-theme="dark"] {
-    --bg-color: #1a1a1a;
+    --bg-color: linear-gradient(135deg, #141414 0%, #202020 100%);
     --text-color: #e0e0e0;
-    --card-bg: #2c2c2c;
+    --card-bg: #222222;
     --primary-color: #bdc3c7;
+    --input-border: #475569;
+    --shadow-sm: 0 2px 8px rgba(0,0,0,0.2);
+    --shadow-md: 0 10px 25px rgba(0,0,0,0.3);
 }
 
 body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans CJK SC", "Microsoft YaHei", sans-serif;
-    background-color: var(--bg-color);
+    background: var(--bg-color);
+    background-attachment: fixed;
     color: var(--text-color);
     line-height: 1.8;
     margin: 0;
-    padding: 20px;
+    padding: 30px 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    transition: background-color 0.3s, color 0.3s;
+    transition: background 0.3s, color 0.3s;
 }
 
 /* 🎛️ 控制面板样式 */
 .control-panel {
     display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
+    gap: 12px;
+    margin-bottom: 25px;
     width: 100%;
     max-width: 800px;
 }
 
 .control-panel button {
-    padding: 8px 16px;
-    border: 1px solid #ddd;
+    padding: 10px 20px;
+    border: 1px solid rgba(0,0,0,0.05);
     background: var(--card-bg);
     color: var(--text-color);
-    border-radius: 20px;
+    border-radius: 24px;
     cursor: pointer;
-    font-weight: bold;
-    transition: all 0.2s;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: var(--shadow-sm);
 }
 
 .control-panel button:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(44, 62, 80, 0.08);
 }
 
 .control-panel button#pyToggle.active {
     background: #3498db;
     color: white;
     border-color: #3498db;
+    box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3);
 }
 
 /* 📝 生词本区域 */
@@ -70,11 +79,12 @@ body {
     width: 100%;
     max-width: 800px;
     background: var(--card-bg);
-    padding: 15px 20px;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-    margin-bottom: 20px;
+    padding: 20px;
+    border-radius: 16px;
+    box-shadow: var(--shadow-md);
+    margin-bottom: 25px;
     box-sizing: border-box;
+    border: 1px solid rgba(0,0,0,0.02);
 }
 
 .notebook-title {
@@ -83,7 +93,7 @@ body {
     align-items: center;
     font-weight: bold;
     font-size: 16px;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
     color: var(--text-color);
 }
 
@@ -91,30 +101,42 @@ body {
     background: #e74c3c;
     color: white;
     border: none;
-    padding: 4px 10px;
-    border-radius: 12px;
+    padding: 5px 14px;
+    border-radius: 20px;
     cursor: pointer;
     font-size: 12px;
+    font-weight: bold;
+    transition: opacity 0.2s;
 }
+
+.clear-btn:hover { opacity: 0.9; }
 
 .notebook-list {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
+    gap: 10px;
 }
 
 .notebook-item {
-    background: #f1f2f6;
-    color: #2f3542;
-    padding: 4px 12px;
-    border-radius: 15px;
+    background: rgba(52, 152, 219, 0.08);
+    color: #2980b9;
+    padding: 6px 16px;
+    border-radius: 20px;
     font-size: 14px;
+    font-weight: 500;
     cursor: pointer;
-    transition: background 0.2s;
+    transition: all 0.2s;
+}
+
+[data-theme="dark"] .notebook-item {
+    background: rgba(52, 152, 219, 0.2);
+    color: #3498db;
 }
 
 .notebook-item:hover {
-    background: #dfe4ea;
+    background: #3498db;
+    color: white;
+    transform: scale(1.05);
 }
 
 /* 🧩 生词测试游戏区域 */
@@ -122,11 +144,12 @@ body {
     width: 100%;
     max-width: 800px;
     background: var(--card-bg);
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(142, 68, 173, 0.15);
-    margin-bottom: 20px;
+    padding: 25px;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(142, 68, 173, 0.12);
+    margin-bottom: 25px;
     box-sizing: border-box;
+    border: 1px solid rgba(142, 68, 173, 0.05);
 }
 
 .quiz-card {
@@ -135,28 +158,30 @@ body {
 }
 
 .quiz-question {
-    font-size: 32px;
+    font-size: 36px;
     font-weight: bold;
     color: #8e44ad;
+    letter-spacing: 2px;
 }
 
 .quiz-pinyin {
     font-size: 16px;
     color: #7f8c8d;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
 }
 
 .quiz-options {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 12px;
+    gap: 14px;
 }
 
 .quiz-opt-btn {
-    padding: 12px;
-    background: #f8f9fa;
-    border: 1px solid #e2e8f0;
-    border-radius: 8px;
+    padding: 14px 20px;
+    background: var(--bg-color);
+    border: 1px solid var(--input-border);
+    color: var(--text-color);
+    border-radius: 10px;
     font-size: 15px;
     cursor: pointer;
     text-align: left;
@@ -164,7 +189,9 @@ body {
 }
 
 .quiz-opt-btn:hover {
-    background: #edf2f7;
+    background: var(--card-bg);
+    border-color: #8e44ad;
+    box-shadow: 0 4px 10px rgba(142, 68, 173, 0.08);
     transform: translateY(-1px);
 }
 
@@ -172,6 +199,7 @@ body {
     background: #2ecc71 !important;
     color: white !important;
     border-color: #2ecc71;
+    box-shadow: 0 4px 12px rgba(46, 204, 113, 0.3);
 }
 
 .quiz-opt-btn.wrong {
@@ -179,6 +207,7 @@ body {
     color: white !important;
     border-color: #e74c3c;
     cursor: not-allowed;
+    box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
 }
 
 /* 📖 课文文章卡片 */
@@ -186,40 +215,50 @@ body {
     width: 100%;
     max-width: 800px;
     background: var(--card-bg);
-    padding: 40px;
-    border-radius: 16px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    padding: 50px 60px;
+    border-radius: 20px;
+    box-shadow: var(--shadow-md);
     box-sizing: border-box;
+    border: 1px solid rgba(0,0,0,0.01);
 }
 
 h1 {
     text-align: center;
-    font-size: 28px;
+    font-size: 32px;
+    font-weight: 800;
     margin-top: 0;
-    margin-bottom: 30px;
+    margin-bottom: 40px;
     color: var(--text-color);
+    letter-spacing: 2px;
 }
 
 #content p {
     text-align: justify;
     text-justify: inter-ideograph;
-    margin-bottom: 25px;
-    font-size: 18px;
-    letter-spacing: 1px;
+    margin-bottom: 35px;
+    font-size: 19px;
+    letter-spacing: 1.5px;
+    color: var(--text-color);
 }
 
-/* 🎯 段落编号特殊标签 */
+/* 🎯 段落编号特殊标签：优雅国风小书签（黛蓝色/竹青色结合体） */
 .p-index {
     display: inline-block;
-    font-size: 11px;
-    background: #e2e8f0;
-    color: #4a5568;
-    padding: 1px 6px;
-    border-radius: 4px;
-    margin-right: 8px;
-    vertical-align: middle;
-    font-weight: bold;
+    font-size: 12px;
+    background: #eef3f0; /* 极淡的竹青底色 */
+    color: #2c3e50;      /* 黛蓝字 */
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-weight: 600;
     user-select: none;
+    border: 1px solid #d2ded7;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+}
+
+[data-theme="dark"] .p-index {
+    background: #2d3748;
+    color: #a0aec0;
+    border-color: #4a5568;
 }
 
 /* 🍊 拼音标注（Ruby）与智能隐藏 */
@@ -228,28 +267,58 @@ ruby {
     cursor: pointer;
     padding: 0 2px;
     border-radius: 4px;
-    transition: background 0.2s;
+    transition: all 0.2s;
 }
 
 ruby:hover, ruby.is-active {
-    background: #ffeaa7;
+    background: #fff3cd;
+    color: #d35400;
+}
+
+[data-theme="dark"] ruby:hover, [data-theme="dark"] ruby.is-active {
+    background: #4a3716;
+    color: #f39c12;
 }
 
 rt {
     font-size: 12px;
     color: var(--ruby-color);
     font-family: "PingFang SC", "Lucida Grande", sans-serif;
-    padding-bottom: 3px;
+    padding-bottom: 5px;
     user-select: none;
     transition: opacity 0.2s;
 }
 
 /* 🙈 隐藏拼音切换逻辑 */
-.hide-pinyin rt {
-    opacity: 0;
+.hide-pinyin rt { opacity: 0; }
+.hide-pinyin ruby:hover rt, .hide-pinyin ruby.is-active rt { opacity: 1; }
+
+/* ✍️ 学生作答输入框：呼吸聚焦光晕升级 */
+textarea {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    border: 1px solid var(--input-border) !important;
+    background: var(--card-bg) !important;
+    color: var(--text-color) !important;
+    outline: none !important;
 }
-.hide-pinyin ruby:hover rt, .hide-pinyin ruby.is-active rt {
-    opacity: 1;
+
+textarea:focus {
+    border-color: var(--ai-color) !important; /* 聚焦时变为AI专属紫色 */
+    box-shadow: 0 0 0 4px rgba(155, 89, 182, 0.15) !important; /* 紫色呼吸保护光晕 */
+    background: var(--card-bg) !important;
+}
+
+/* 🤖 AI 批改结果框：极致流光科技感卡片 */
+div[id^="aiBox"], .ai-result-box {
+    background: linear-gradient(to right, #f4f9fd, #f9f6fc) !important; /* 双色微渐变 */
+    border-left: 5px solid transparent !important;
+    border-image: linear-gradient(to bottom, #3498db, #9b59b6) 1 !important; /* 炫酷的蓝紫流光渐变左边框 */
+    box-shadow: 0 4px 15px rgba(155, 89, 182, 0.05) !important;
+    font-weight: 500;
+}
+
+[data-theme="dark"] div[id^="aiBox"] {
+    background: linear-gradient(to right, #1a242f, #251b2d) !important;
 }
 
 /* 💬 字典词摘气泡弹窗（Popover） */
@@ -257,13 +326,14 @@ rt {
     display: none;
     position: fixed;
     z-index: 9999;
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-    padding: 16px;
-    width: 260px;
+    background: var(--card-bg);
+    color: var(--text-color);
+    border-radius: 14px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.12);
+    padding: 18px;
+    width: 270px;
     box-sizing: border-box;
-    border: 1px solid #e2e8f0;
+    border: 1px solid var(--input-border);
 }
 
 .pop-title-row {
@@ -271,20 +341,19 @@ rt {
     align-items: baseline;
     gap: 8px;
     margin-bottom: 12px;
-    border-bottom: 1px solid #edf2f7;
-    padding-bottom: 6px;
+    border-bottom: 1px solid var(--input-border);
+    padding-bottom: 8px;
 }
 
 .pop-title {
-    font-size: 20px;
+    font-size: 22px;
     font-weight: bold;
-    color: #2d3748;
 }
 
 .pop-pinyin {
-    font-size: 13px;
+    font-size: 14px;
     color: #e67e22;
-    font-weight: 500;
+    font-weight: 600;
 }
 
 .pop-box {
@@ -292,18 +361,18 @@ rt {
     gap: 8px;
     align-items: flex-start;
     font-size: 14px;
-    margin-bottom: 8px;
-    line-height: 1.4;
+    margin-bottom: 10px;
+    line-height: 1.5;
 }
 
 .pop-tag {
-    font-size: 10px;
+    font-size: 11px;
     font-weight: bold;
     color: white;
-    padding: 1px 4px;
-    border-radius: 3px;
+    padding: 2px 5px;
+    border-radius: 4px;
     flex-shrink: 0;
-    margin-top: 2px;
+    margin-top: 1px;
 }
 
 .pop-en { color: #2980b9; }
@@ -315,21 +384,24 @@ rt {
 .pop-footer {
     display: flex;
     justify-content: flex-end;
-    margin-top: 12px;
-    padding-top: 8px;
-    border-top: 1px solid #edf2f7;
+    margin-top: 14px;
+    padding-top: 10px;
+    border-top: 1px solid var(--input-border);
 }
 
 .pop-btn-copy {
     background: #2ecc71;
     color: white;
     border: none;
-    padding: 5px 12px;
-    border-radius: 6px;
-    font-size: 12px;
+    padding: 6px 16px;
+    border-radius: 8px;
+    font-size: 13px;
     cursor: pointer;
     font-weight: bold;
+    transition: background 0.2s;
 }
+
+.pop-btn-copy:hover { background: #27ae60; }
 
 .pop-arrow {
     position: absolute;
@@ -339,14 +411,14 @@ rt {
     height: 0;
     border-left: 8px solid transparent;
     border-right: 8px solid transparent;
-    border-top: 8px solid white;
+    border-top: 8px solid var(--card-bg);
     transform: translateX(-50%);
 }
 
 /* 📱 响应式适配移动端手机 */
 @media (max-width: 600px) {
-    body { padding: 10px; }
-    .article-card { padding: 20px; }
-    #content p { font-size: 16px; }
+    body { padding: 15px 10px; }
+    .article-card { padding: 30px 20px; }
+    #content p { font-size: 17px; }
     .quiz-options { grid-template-columns: 1fr; }
 }
